@@ -1,0 +1,238 @@
+# client-parser
+
+<!-- repository summary badges start -->
+<div>
+    <img alt="NPM Version" src="https://badgen.net/npm/v/client-parser?label=version&labelColor=EB008B&color=00B8B5">
+    <img alt="NPM Downloads" src="https://badgen.net/npm/dm/client-parser?label=downloads&labelColor=EB008B&color=00B8B5">
+    <img alt="NPM Package" src="https://badgen.net/npm/license/client-parser?label=license&labelColor=EB008B&color=00B8B5">
+</div>
+<!-- repository summary badges end -->
+
+The [client-parser](https://www.npmjs.com/package/client-parser) is a lightweight and comprehensive utility providing standardized MIME types for applications. It simplifies the handling of file format identification by offering predefined constants, ensuring clarity and consistency in file processing and serving.
+
+## Table of Contents
+
+- [Key Features](#key-features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Returned Device Information Structure](#Returned-device-information-structure)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+- [FAQs](#faqs)
+
+---
+
+## Key Features
+
+1. **Detailed Device Detection:** Identifies general device categories (Android, iOS, Windows Phone, PC, unknown).
+2. **Operating System Information:** Extracts OS name (e.g., Android, iOS, Windows, macOS, Linux) and version.
+3. **Browser Information:** Detects browser name (e.g., Chrome, Safari, Firefox, Edge) and version.
+4. **Mobile/Tablet Flags:** Provides boolean flags (`isMobile`, `isTablet`) for quick checks.
+5. **TypeScript Support:** Includes strong type definitions (`DeviceInfo` interface) for enhanced code safety and developer experience.
+6. **Lightweight & Efficient:** Minimal footprint with high performance.
+7. **Easy Integration:** Seamlessly integrates with any Node.js or TypeScript-based project.
+
+---
+
+## Installation
+
+To install the package, run the following command:
+
+```bash
+npm install client-parser
+```
+
+---
+
+## Usage
+
+### CommonJS
+
+```javascript
+const { getDeviceType } = require('client-parser');
+
+const deviceInfo = getDeviceType();
+console.log(deviceInfo.type); // Outputs: e.g., "pc", "android", "ios"
+console.log(deviceInfo.browser); // Outputs: e.g., "Chrome", "Safari"
+```
+
+### Module (ESM)
+
+```javascript
+import { getDeviceType } from 'client-parser';
+
+const deviceInfo = getDeviceType();
+console.log(deviceInfo.type); // Outputs: e.g., "pc", "android", "ios"
+
+// TypeScript example:
+import { getDeviceType, DeviceInfo } from 'client-parser';
+
+const currentDevice: DeviceInfo = getDeviceType();
+if (currentDevice.isMobile) {
+    console.log(`You are on a mobile device running ${currentDevice.os} ${currentDevice.osVersion}`);
+} else if (currentDevice.type === 'pc') {
+    console.log(`You are on a desktop PC using ${currentDevice.browser} ${currentDevice.browserVersion}`);
+}
+```
+
+### Example Usage in an Express.js Application (ESM)
+
+While client-parser primarily uses navigator.userAgent which is a browser-side API, you can simulate its usage in a Node.js environment for testing or if you were to pass a User Agent string from a request header.
+
+```javascript
+import { getDeviceType } from 'client-parser';
+import express from 'express'; // Assuming express is installed: npm install express
+
+const app = express();
+
+app.get('/', (req, res) => {
+    // In a real scenario, req.headers['user-agent'] would be used.
+    // For this example, we'll use a mock user agent string.
+    // In a browser, getDeviceType() would automatically use navigator.userAgent.
+    const userAgent =
+        req.headers['user-agent'] ||
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36';
+
+    // Temporarily override navigator.userAgent for server-side simulation
+    // This is for demonstration in a Node.js context only.
+    // In a browser, you would just call getDeviceType() directly.
+    const originalUserAgent = navigator.userAgent;
+    Object.defineProperty(navigator, 'userAgent', {
+        value: userAgent,
+        configurable: true, // Make it configurable so we can change it back
+    });
+
+    const deviceInfo = getDeviceType();
+
+    // Restore original userAgent
+    Object.defineProperty(navigator, 'userAgent', {
+        value: originalUserAgent,
+        configurable: true,
+    });
+
+    let message = `Hello from your ${deviceInfo.type} device!`;
+
+    if (deviceInfo.isMobile) {
+        message += ` You're using a mobile device with ${deviceInfo.os} ${deviceInfo.osVersion}.`;
+        if (deviceInfo.isTablet) {
+            message += ` (It looks like a tablet!)`;
+        }
+    } else if (deviceInfo.type === 'pc') {
+        message += ` You're on a PC running ${deviceInfo.os} ${deviceInfo.osVersion}.`;
+    }
+
+    message += ` Your browser is ${deviceInfo.browser} ${deviceInfo.browserVersion}.`;
+
+    res.send(message);
+});
+
+const PORT = 3000;
+app.listen(PORT, () =>
+    console.log(`Server running on http://localhost:${PORT}`)
+);
+```
+
+---
+
+## Returned Device Information Structure
+
+The getDeviceType() function returns an object conforming to the DeviceInfo interface, providing comprehensive details about the client's environment.
+
+```typescript
+export interface DeviceInfo {
+    /** The general category of the device: "android", "ios", "windows_phone", "pc", or "unknown". */
+    type: 'android' | 'ios' | 'windows_phone' | 'pc' | 'unknown';
+    /** The operating system name (e.g., "Android", "iOS", "Windows", "macOS", "Linux"). */
+    os?: string;
+    /** The version of the operating system. */
+    osVersion?: string;
+    /** True if the device is likely a tablet, false otherwise. */
+    isTablet?: boolean;
+    /** True if the device is a mobile phone or tablet, false otherwise. */
+    isMobile?: boolean;
+    /** The name of the browser (e.g., "Chrome", "Safari", "Firefox", "Edge", "IE", "Opera"). */
+    browser?: string;
+    /** The version of the browser. */
+    browserVersion?: string;
+}
+```
+
+### Possible Values and Examples:
+
+- type:
+    - "android": Android phones and tablets.
+    - "ios": iPhones, iPads, iPods.
+    - "windows_phone": Devices running Windows Phone OS.
+    - "pc": Desktop/laptop computers (Windows, macOS, Linux).
+    - "unknown": Any other or unrecognized device types.
+- os: "Android", "iOS", "Windows Phone", "Windows", "macOS", "Linux".
+- osVersion: E.g., "13", "17.0.3", "10.0", "10_15_7".
+- isTablet: true or false.
+- isMobile: true or false.
+- browser: "Chrome", "Firefox", "Safari", "Edge", "Opera", "Internet Explorer".
+- browserVersion: E.g., "100.0.4896.127", "119.0", "17.0".
+
+## License
+
+[![by-nc-nd/4.0](https://licensebuttons.net/l/by-nc-nd/4.0/88x31.png)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+This project is licensed under the **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)**.
+
+### You are free to:
+
+- **Share** — Copy and redistribute the material in any medium or format.
+
+### Under the following terms:
+
+- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+- **NonCommercial** — You may not use the material for commercial purposes.
+- **NoDerivatives** — If you remix, transform, or build upon the material, you may not distribute the modified material.
+
+For more details, please visit the [Creative Commons License Page](https://creativecommons.org/licenses/by-nc-nd/4.0/).
+
+---
+
+## Acknowledgments
+
+Special thanks to the following resources:
+
+1. **MDN Web Docs** - Comprehensive MIME type references.
+2. **UserAgentString.com** - A valuable resource for understanding various User Agent string formats.
+3. **TypeScript Docs** - Best practices for defining and using type-safe constants.
+
+---
+
+## FAQs
+
+### 1. **How accurate is device detection using the User Agent string?**
+
+User Agent string parsing is generally effective but not 100% foolproof. User Agents can be spoofed, incomplete, or vary across different browser versions and custom builds. For critical applications, consider combining this with feature detection (e.g., checking for specific browser APIs) for more robust results.
+
+### 2. **Can this library detect specific device models (e.g., "iPhone 15 Pro")?**
+
+No, this library focuses on broader device categories (phone, tablet, PC) and operating systems. Detecting specific device models from the User Agent string alone is often unreliable and not within the scope of this lightweight utility.
+
+### 3. **How do I uninstall the package?**
+
+You can remove the package by running:
+
+```bash
+npm uninstall client-parser
+```
+
+---
+
+## Author
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/95298623?v=4" width="100px" alt="Moon">
+      <a href="https://github.com/montasim">
+        <br>
+          Ｍ♢ＮＴΛＳＩＭ
+        <br>
+      </a>
+    </td>
+  </tr>
+</table>
