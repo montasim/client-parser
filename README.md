@@ -42,94 +42,71 @@ To install the package, run the following command:
 npm install client-parser
 ```
 
+or
+
+```bash
+yarn add client-parser
+```
+
+or
+
+```bash
+pnpm add client-parser
+```
+
+or
+
+```bash
+bun add client-parser
+```
+
 ---
 
 ## Usage
 
-### CommonJS
+### JavaScript CommonJS Example
 
 ```javascript
-const { getDeviceType } = require('client-parser');
+const getDeviceType = require('client-parser');
 
 const deviceInfo = getDeviceType();
-console.log(deviceInfo.type); // Outputs: e.g., "pc", "android", "ios"
-console.log(deviceInfo.browser); // Outputs: e.g., "Chrome", "Safari"
+
+// Log some of the detected information
+console.log('Device Type:', deviceInfo.type); // Outputs: e.g., "pc", "android", "ios", "unknown"
+console.log('Operating System:', deviceInfo.os); // Outputs: e.g., "Windows", "Android", "iOS"
+console.log('Browser:', deviceInfo.browser); // Outputs: e.g., "Chrome", "Safari", "Firefox"
+console.log('Is Mobile:', deviceInfo.isMobile); // Outputs: true or false
+console.log('Is Tablet:', deviceInfo.isTablet); // Outputs: true or false
 ```
 
-### Module (ESM)
+### JavaScript ESM Example
 
 ```javascript
-import { getDeviceType } from 'client-parser';
+import getDeviceType from 'client-parser';
 
 const deviceInfo = getDeviceType();
-console.log(deviceInfo.type); // Outputs: e.g., "pc", "android", "ios"
 
-// TypeScript example:
-import { getDeviceType, DeviceInfo } from 'client-parser';
-
-const currentDevice: DeviceInfo = getDeviceType();
-if (currentDevice.isMobile) {
-    console.log(`You are on a mobile device running ${currentDevice.os} ${currentDevice.osVersion}`);
-} else if (currentDevice.type === 'pc') {
-    console.log(`You are on a desktop PC using ${currentDevice.browser} ${currentDevice.browserVersion}`);
-}
+// Log some of the detected information
+console.log('Device Type:', deviceInfo.type); // Outputs: e.g., "pc", "android", "ios", "unknown"
+console.log('Operating System:', deviceInfo.os); // Outputs: e.g., "Windows", "Android", "iOS"
+console.log('Browser:', deviceInfo.browser); // Outputs: e.g., "Chrome", "Safari", "Firefox"
+console.log('Is Mobile:', deviceInfo.isMobile); // Outputs: true or false
+console.log('Is Tablet:', deviceInfo.isTablet); // Outputs: true or false
 ```
 
-### Example Usage in an Express.js Application (ESM)
+### TypeScript ESM Example
 
-While client-parser primarily uses navigator.userAgent which is a browser-side API, you can simulate its usage in a Node.js environment for testing or if you were to pass a User Agent string from a request header.
+```typescript
+import getDeviceType, { IDeviceInfo } from 'client-parser';
 
-```javascript
-import { getDeviceType } from 'client-parser';
-import express from 'express'; // Assuming express is installed: npm install express
+const currentDevice: IDeviceInfo = getDeviceType();
 
-const app = express();
-
-app.get('/', (req, res) => {
-    // In a real scenario, req.headers['user-agent'] would be used.
-    // For this example, we'll use a mock user agent string.
-    // In a browser, getDeviceType() would automatically use navigator.userAgent.
-    const userAgent =
-        req.headers['user-agent'] ||
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36';
-
-    // Temporarily override navigator.userAgent for server-side simulation
-    // This is for demonstration in a Node.js context only.
-    // In a browser, you would just call getDeviceType() directly.
-    const originalUserAgent = navigator.userAgent;
-    Object.defineProperty(navigator, 'userAgent', {
-        value: userAgent,
-        configurable: true, // Make it configurable so we can change it back
-    });
-
-    const deviceInfo = getDeviceType();
-
-    // Restore original userAgent
-    Object.defineProperty(navigator, 'userAgent', {
-        value: originalUserAgent,
-        configurable: true,
-    });
-
-    let message = `Hello from your ${deviceInfo.type} device!`;
-
-    if (deviceInfo.isMobile) {
-        message += ` You're using a mobile device with ${deviceInfo.os} ${deviceInfo.osVersion}.`;
-        if (deviceInfo.isTablet) {
-            message += ` (It looks like a tablet!)`;
-        }
-    } else if (deviceInfo.type === 'pc') {
-        message += ` You're on a PC running ${deviceInfo.os} ${deviceInfo.osVersion}.`;
-    }
-
-    message += ` Your browser is ${deviceInfo.browser} ${deviceInfo.browserVersion}.`;
-
-    res.send(message);
-});
-
-const PORT = 3000;
-app.listen(PORT, () =>
-    console.log(`Server running on http://localhost:${PORT}`)
-);
+// Log some of the detected information
+console.log('Device Type:', deviceInfo.type); // Outputs: e.g., "pc", "android", "ios", "unknown"
+console.log('Operating System:', deviceInfo.os); // Outputs: e.g., "Windows", "Android", "iOS"
+console.log('Browser:', deviceInfo.browser); // Outputs: e.g., "Chrome", "Safari", "Firefox"
+console.log('Is Mobile:', deviceInfo.isMobile); // Outputs: true or false
+console.log('Is Tablet:', deviceInfo.isTablet); // Outputs: true or false
 ```
 
 ---
@@ -218,6 +195,24 @@ You can remove the package by running:
 
 ```bash
 npm uninstall client-parser
+```
+
+or
+
+```bash
+yarn remove client-parser
+```
+
+or
+
+```bash
+pnpm remove client-parser
+```
+
+or
+
+```bash
+bun remove client-parser
 ```
 
 ---
