@@ -14,16 +14,18 @@
  * @contactGithub https://github.com/montasim
  */
 
+import { DEVICE_TYPES, OS_NAMES } from '../constants/names';
+
 export interface IDeviceInfo {
     /**
      * The general type of the device.
      * Can be 'android', 'ios', 'windows_phone', 'pc', or 'unknown'.
      */
-    type: 'android' | 'ios' | 'windows_phone' | 'pc' | 'unknown';
+    type: (typeof DEVICE_TYPES)[keyof typeof DEVICE_TYPES];
     /**
      * The name of the operating system (e.g., 'Android', 'iOS', 'Windows', 'macOS', 'Linux', 'Windows Phone').
      */
-    os?: string;
+    os?: (typeof OS_NAMES)[keyof typeof OS_NAMES];
     /**
      * The version of the operating system (e.g., '10.0', '14.5.1').
      */
