@@ -15,7 +15,7 @@
   "files": [
     "dist",
     "README.md",
-    "welcome.js"
+    "bin/welcome.js"
   ],
   "engines": {
     "node": ">=20.x",
@@ -77,7 +77,7 @@
     "release:minor": "standard-version --release-as minor && git push --follow-tags",
     "release:major": "standard-version --release-as major && git push --follow-tags",
     "release:patch": "standard-version --release-as patch && git push --follow-tags",
-    "postinstall": "node welcome.js"
+    "postinstall": "node bin/welcome.js"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
