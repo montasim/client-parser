@@ -14,36 +14,73 @@
  * @contactGithub https://github.com/montasim
  */
 
-import { DEVICE_TYPES, OS_NAMES } from '../constants/names';
+import { DEVICE_TYPES, OS_NAMES, BROWSER_NAMES } from '../constants/names';
 
+/**
+ * Interface for the 'device' property within IDeviceInfo.
+ */
+export interface IDeviceDetails {
+    type: (typeof DEVICE_TYPES)[keyof typeof DEVICE_TYPES];
+    name: string; // e.g., 'unknown', 'iPhone', 'Galaxy S21'
+    model: string; // e.g., 'unknown', 'iPhone13,4'
+    manufacturer?: string; // e.g., 'unknown', 'Apple', 'Samsung'
+}
+
+/**
+ * Interface for the 'engine' property within IDeviceInfo.
+ */
+export interface IEngineInfo {
+    name: string; // e.g., 'unknown', 'WebKit', 'Gecko', 'Blink'
+    version: string; // e.g., 'unknown', '537.36', '91.0'
+}
+
+/**
+ * Interface for the 'os' property within IDeviceInfo.
+ */
+export interface IOSInfo {
+    name: (typeof OS_NAMES)[keyof typeof OS_NAMES] | string; // e.g., 'Windows', 'iOS', 'Android'. Using string for 'unknown' or unlisted OS.
+    version?: string; // e.g., '10.0', '14.5.1'
+    architecture?: string; // e.g., 'x64', 'ARM'
+}
+
+/**
+ * Interface for the 'browser' property within IDeviceInfo.
+ */
+export interface IBrowserInfo {
+    name: (typeof BROWSER_NAMES)[keyof typeof BROWSER_NAMES] | string; // e.g., 'Chrome', 'Firefox', 'Safari'. Using string for 'unknown' or unlisted browser.
+    version: string; // e.g., '126.0.0.0', '91.0.4472.124'
+}
+
+/**
+ * Main interface for detailed device information.
+ */
 export interface IDeviceInfo {
     /**
-     * The general type of the device.
-     * Can be 'android', 'ios', 'windows_phone', 'pc', or 'unknown'.
+     * The raw User Agent string.
      */
-    type: (typeof DEVICE_TYPES)[keyof typeof DEVICE_TYPES];
+    userAgentString: string;
     /**
-     * The name of the operating system (e.g., 'Android', 'iOS', 'Windows', 'macOS', 'Linux', 'Windows Phone').
+     * Detailed information about the device itself.
      */
-    os?: (typeof OS_NAMES)[keyof typeof OS_NAMES];
+    device: IDeviceDetails;
     /**
-     * The version of the operating system (e.g., '10.0', '14.5.1').
+     * Information about the rendering engine.
      */
-    osVersion?: string;
+    engine: IEngineInfo;
     /**
-     * Indicates whether the device is a tablet.
+     * Information about the operating system.
      */
-    isTablet?: boolean;
+    os: IOSInfo;
     /**
-     * Indicates whether the device is a mobile phone (including tablets for broader mobile classification).
+     * Information about the browser.
      */
-    isMobile?: boolean;
+    browser: IBrowserInfo;
     /**
-     * The name of the browser (e.g., 'Chrome', 'Firefox', 'Safari', 'Edge', 'Opera', 'Internet Explorer').
+     * The platform detected (e.g., 'Win32', 'MacIntel', 'Linux x86_64').
      */
-    browser?: string;
+    platform: string;
     /**
-     * The version of the browser (e.g., '91.0.4472.124').
+     * Indicates if the user agent is a bot.
      */
-    browserVersion?: string;
+    isBot: boolean;
 }

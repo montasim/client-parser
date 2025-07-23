@@ -39,6 +39,8 @@ export const DEVICE_TYPES = Object.freeze({
  * @enum {string}
  */
 export const OS_NAMES = Object.freeze({
+    /** Represents an unknown or uncategorized operating system. */
+    UNKNOWN: 'unknown',
     /** Represents the Windows Phone operating system. */
     WINDOWS_PHONE: 'Windows Phone',
     /** Represents the iOS operating system. */
@@ -60,6 +62,8 @@ export const OS_NAMES = Object.freeze({
  * @enum {string}
  */
 export const BROWSER_NAMES = Object.freeze({
+    /** Represents an unknown or uncategorized browser. */
+    UNKNOWN: 'unknown',
     /** Represents the Microsoft Edge browser. */
     EDGE: 'Edge',
     /** Represents the Opera browser. */

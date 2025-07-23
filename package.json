@@ -63,6 +63,7 @@
     "access": "public"
   },
   "scripts": {
+    "detect-ua": "ts-node scripts/run_detection.js",
     "build:esm": "tsc --build tsconfig.json",
     "build:cjs": "tsc --build tsconfig.cjs.json",
     "build": "rimraf dist && npm run build:esm && npm run build:cjs",

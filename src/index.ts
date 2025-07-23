@@ -30,91 +30,113 @@ const _detectOSAndDevice = (
     userAgent: string,
     deviceInfo: IDeviceInfo
 ): void => {
-    // Windows Phone (before Android and iOS)
+    // Order matters: More specific detections first.
+
+    // 1. Windows Phone
     if (USER_AGENT_REGEX.WINDOWS_PHONE.test(userAgent)) {
-        deviceInfo.type = DEVICE_TYPES.WINDOWS_PHONE;
-        deviceInfo.os = OS_NAMES.WINDOWS_PHONE;
-        deviceInfo.isMobile = true;
-        const wpMatch = userAgent.match(USER_AGENT_REGEX.WINDOWS_PHONE_VERSION);
-        if (wpMatch) {
-            deviceInfo.osVersion = wpMatch[1];
+        deviceInfo.device.type = DEVICE_TYPES.WINDOWS_PHONE;
+        deviceInfo.os.name = OS_NAMES.WINDOWS_PHONE;
+        const wpMatch = userAgent.match(USER_AGENT_REGEX.WINDOWS_PHONE); // Use the regex that captures a version
+        if (wpMatch && wpMatch[1]) {
+            deviceInfo.os.version = wpMatch[1];
         }
-        return;
+        deviceInfo.device.name = 'Windows Phone';
+        return; // Important: return after detection
     }
 
-    // iPad detection
+    // 2. iOS Devices (iPad, iPhone, iPod)
+    // iPad detection should come before general iPhone/iPod if you want to distinguish tablets
     if (USER_AGENT_REGEX.IPAD.test(userAgent)) {
-        deviceInfo.type = DEVICE_TYPES.IOS;
-        deviceInfo.os = OS_NAMES.IOS;
+        deviceInfo.device.type = DEVICE_TYPES.IOS; // You might want DEVICE_TYPES.IOS_TABLET if distinct
+        deviceInfo.os.name = OS_NAMES.IOS;
         const versionMatch = userAgent.match(USER_AGENT_REGEX.IOS_VERSION);
-        if (versionMatch) {
-            deviceInfo.osVersion = versionMatch[1].replace(/_/g, '.');
+        if (versionMatch && versionMatch[1]) {
+            deviceInfo.os.version = versionMatch[1].replace(/_/g, '.');
         }
-        deviceInfo.isMobile = true;
-        deviceInfo.isTablet = true;
+        deviceInfo.device.name = 'iPad';
         return;
     }
 
-    // iPhone
     const iPhoneMatch = userAgent.match(USER_AGENT_REGEX.IPHONE);
     if (iPhoneMatch) {
-        deviceInfo.type = DEVICE_TYPES.IOS;
-        deviceInfo.os = OS_NAMES.IOS;
-        deviceInfo.osVersion = iPhoneMatch[1].replace(/_/g, '.');
-        deviceInfo.isMobile = true;
-        deviceInfo.isTablet = false;
+        deviceInfo.device.type = DEVICE_TYPES.IOS; // Mobile
+        deviceInfo.os.name = OS_NAMES.IOS;
+        const versionMatch = userAgent.match(USER_AGENT_REGEX.IOS_VERSION);
+        if (versionMatch && versionMatch[1]) {
+            deviceInfo.os.version = versionMatch[1].replace(/_/g, '.');
+        }
+        deviceInfo.device.name = 'iPhone';
         return;
     }
 
-    // Android (more specific to avoid Windows Phone false positives)
-    const androidMatch = userAgent.match(USER_AGENT_REGEX.ANDROID);
-    if (androidMatch && !USER_AGENT_REGEX.WINDOWS_PHONE.test(userAgent)) {
-        deviceInfo.type = DEVICE_TYPES.ANDROID;
-        deviceInfo.os = OS_NAMES.ANDROID;
-        deviceInfo.osVersion = androidMatch[1];
-        deviceInfo.isMobile = true;
+    const iPodMatch = userAgent.match(USER_AGENT_REGEX.IPOD);
+    if (iPodMatch) {
+        deviceInfo.device.type = DEVICE_TYPES.IOS; // Mobile
+        deviceInfo.os.name = OS_NAMES.IOS;
+        const versionMatch = userAgent.match(USER_AGENT_REGEX.IOS_VERSION);
+        if (versionMatch && versionMatch[1]) {
+            deviceInfo.os.version = versionMatch[1].replace(/_/g, '.');
+        }
+        deviceInfo.device.name = 'iPod Touch';
+        return;
+    }
 
-        if (
-            !USER_AGENT_REGEX.MOBILE_OR_MOBI.test(userAgent) ||
-            USER_AGENT_REGEX.TABLET_OR_SMT_OR_KF.test(userAgent)
-        ) {
-            deviceInfo.isTablet = true;
+    // 3. Android
+    const androidMatch = userAgent.match(USER_AGENT_REGEX.ANDROID);
+    // Ensure it's not a Windows Phone UA that might contain "Android" for some reason
+    if (androidMatch) {
+        // Removed !USER_AGENT_REGEX.WINDOWS_PHONE.test(userAgent) as it's already returned above
+        deviceInfo.os.name = OS_NAMES.ANDROID;
+        deviceInfo.os.version = androidMatch[1];
+
+        // Differentiate Android Phone vs. Tablet
+        if (USER_AGENT_REGEX.MOBILE_INDICATOR.test(userAgent)) {
+            deviceInfo.device.type = DEVICE_TYPES.ANDROID; // Phone
+            deviceInfo.device.name = 'Android Phone';
+        } else if (USER_AGENT_REGEX.TABLET_INDICATOR.test(userAgent)) {
+            deviceInfo.device.type = DEVICE_TYPES.ANDROID; // Tablet
+            deviceInfo.device.name = 'Android Tablet';
+        } else {
+            // Default to mobile if no strong tablet indicator and not a known mobile indicator
+            // This is a heuristic, Android UAs can be ambiguous
+            deviceInfo.device.type = DEVICE_TYPES.ANDROID;
+            deviceInfo.device.name = 'Android Device';
         }
         return;
     }
 
-    // Windows PC
+    // 4. Desktop OSes (Windows, macOS, Linux) - Checked after mobile OSes
     const windowsMatch = userAgent.match(USER_AGENT_REGEX.WINDOWS_NT);
     if (windowsMatch) {
-        deviceInfo.type = DEVICE_TYPES.PC;
-        deviceInfo.os = OS_NAMES.WINDOWS;
-        deviceInfo.osVersion = windowsMatch[1];
+        deviceInfo.device.type = DEVICE_TYPES.PC;
+        deviceInfo.os.name = OS_NAMES.WINDOWS;
+        deviceInfo.os.version = windowsMatch[1];
+        deviceInfo.device.name = 'Windows PC';
         return;
     }
 
-    // macOS (only if not iPad or iPhone)
-    if (
-        USER_AGENT_REGEX.MAC_OS_X.test(userAgent) &&
-        !USER_AGENT_REGEX.NOT_IPAD_IPHONE.test(userAgent)
-    ) {
-        deviceInfo.type = DEVICE_TYPES.PC;
-        deviceInfo.os = OS_NAMES.MACOS;
+    // macOS
+    // This comes after iOS devices, so if it's an iPad/iPhone, it would have returned already.
+    if (USER_AGENT_REGEX.MAC_OS_X.test(userAgent)) {
+        deviceInfo.device.type = DEVICE_TYPES.PC;
+        deviceInfo.os.name = OS_NAMES.MACOS;
         const macMatch = userAgent.match(USER_AGENT_REGEX.MAC_OS_X);
-        if (macMatch) {
-            deviceInfo.osVersion = macMatch[1].replace(/_/g, '.');
+        if (macMatch && macMatch[1]) {
+            deviceInfo.os.version = macMatch[1].replace(/_/g, '.');
         }
+        deviceInfo.device.name = 'macOS PC';
         return;
     }
 
-    // Linux
-    if (
-        USER_AGENT_REGEX.LINUX.test(userAgent) &&
-        !USER_AGENT_REGEX.NOT_ANDROID.test(userAgent)
-    ) {
-        deviceInfo.type = DEVICE_TYPES.PC;
-        deviceInfo.os = OS_NAMES.LINUX;
+    // Linux (checked after Android to ensure it's not an Android device)
+    // The previous Android check handles Android, so this will only catch non-Android Linux.
+    if (USER_AGENT_REGEX.LINUX.test(userAgent)) {
+        deviceInfo.device.type = DEVICE_TYPES.PC;
+        deviceInfo.os.name = OS_NAMES.LINUX;
+        deviceInfo.device.name = 'Linux PC';
         return;
     }
+    // If no specific OS matched, it remains 'unknown'
 };
 
 /**
@@ -127,56 +149,97 @@ const _detectOSAndDevice = (
  * @returns {void}
  */
 const _detectBrowser = (userAgent: string, deviceInfo: IDeviceInfo): void => {
-    // Edge (Chromium)
+    // Order matters: More specific/overlapping browsers first.
+
+    // 1. Microsoft Edge (Chromium-based)
     const edgeMatch = userAgent.match(USER_AGENT_REGEX.EDGE);
     if (edgeMatch) {
-        deviceInfo.browser = BROWSER_NAMES.EDGE;
-        deviceInfo.browserVersion = edgeMatch[1];
-        return;
-    }
-
-    // Opera
-    const operaMatch = userAgent.match(USER_AGENT_REGEX.OPERA);
-    if (operaMatch) {
-        deviceInfo.browser = BROWSER_NAMES.OPERA;
-        deviceInfo.browserVersion = operaMatch[1];
-        return;
-    }
-
-    // Firefox
-    const firefoxMatch = userAgent.match(USER_AGENT_REGEX.FIREFOX);
-    if (firefoxMatch) {
-        deviceInfo.browser = BROWSER_NAMES.FIREFOX;
-        deviceInfo.browserVersion = firefoxMatch[1];
-        return;
-    }
-
-    // Chrome / CriOS (only if not Edge or Opera)
-    const chromeMatch = userAgent.match(USER_AGENT_REGEX.CHROME_CRIOS);
-    if (chromeMatch && !USER_AGENT_REGEX.NOT_EDGE_OPERA.test(userAgent)) {
-        deviceInfo.browser = BROWSER_NAMES.CHROME;
-        deviceInfo.browserVersion = chromeMatch[1];
-        return;
-    }
-
-    // Safari (only if not Chrome, Edge, Opera, or Firefox)
-    if (
-        USER_AGENT_REGEX.SAFARI.test(userAgent) &&
-        !USER_AGENT_REGEX.NOT_CHROME_CRIOS_EDGE_OPERA_FIREFOX.test(userAgent)
-    ) {
-        const safariMatch = userAgent.match(USER_AGENT_REGEX.SAFARI_VERSION);
-        if (safariMatch) {
-            deviceInfo.browser = BROWSER_NAMES.SAFARI;
-            deviceInfo.browserVersion = safariMatch[1];
+        deviceInfo.browser.name = BROWSER_NAMES.EDGE;
+        deviceInfo.browser.version = edgeMatch[1];
+        // Edge uses Blink engine (Chromium)
+        const webkitMatch = userAgent.match(USER_AGENT_REGEX.WEBKIT_ENGINE);
+        if (webkitMatch && webkitMatch[1]) {
+            deviceInfo.engine.name = 'Blink'; // Chromium-based browsers identify as AppleWebKit
+            deviceInfo.engine.version = webkitMatch[1];
         }
         return;
     }
 
-    // Internet Explorer
+    // 2. Opera (Chromium-based)
+    const operaMatch = userAgent.match(USER_AGENT_REGEX.OPERA);
+    if (operaMatch) {
+        deviceInfo.browser.name = BROWSER_NAMES.OPERA;
+        deviceInfo.browser.version = operaMatch[1];
+        // Opera uses Blink engine (Chromium)
+        const webkitMatch = userAgent.match(USER_AGENT_REGEX.WEBKIT_ENGINE);
+        if (webkitMatch && webkitMatch[1]) {
+            deviceInfo.engine.name = 'Blink';
+            deviceInfo.engine.version = webkitMatch[1];
+        }
+        // Check for old Presto engine if needed (very rare now)
+        const prestoMatch = userAgent.match(USER_AGENT_REGEX.PRESTO_ENGINE);
+        if (prestoMatch && prestoMatch[1]) {
+            deviceInfo.engine.name = 'Presto';
+            deviceInfo.engine.version = prestoMatch[1];
+        }
+        return;
+    }
+
+    // 3. Firefox
+    const firefoxMatch = userAgent.match(USER_AGENT_REGEX.FIREFOX);
+    if (firefoxMatch) {
+        deviceInfo.browser.name = BROWSER_NAMES.FIREFOX;
+        deviceInfo.browser.version = firefoxMatch[1];
+        // Firefox uses Gecko engine
+        const geckoMatch = userAgent.match(USER_AGENT_REGEX.GECKO_ENGINE);
+        if (geckoMatch && geckoMatch[1]) {
+            deviceInfo.engine.name = 'Gecko';
+            deviceInfo.engine.version = geckoMatch[1];
+        }
+        return;
+    }
+
+    // 4. Chrome / CriOS (Should come after Edge and Opera as they are also Chromium-based)
+    const chromeMatch = userAgent.match(USER_AGENT_REGEX.CHROME_CRIOS);
+    if (chromeMatch) {
+        // Removed negative checks like NOT_EDGE_OPERA, as order handles it
+        deviceInfo.browser.name = BROWSER_NAMES.CHROME;
+        deviceInfo.browser.version = chromeMatch[1];
+        // Chrome uses Blink engine
+        const webkitMatch = userAgent.match(USER_AGENT_REGEX.WEBKIT_ENGINE);
+        if (webkitMatch && webkitMatch[1]) {
+            deviceInfo.engine.name = 'Blink';
+            deviceInfo.engine.version = webkitMatch[1];
+        }
+        return;
+    }
+
+    // 5. Safari (Must come after all Chromium browsers, as they all contain "Safari")
+    // To ensure it's actual Safari, check for "Version/X.Y.Z Safari/A.B.C" pattern.
+    const safariVersionMatch = userAgent.match(USER_AGENT_REGEX.SAFARI_VERSION);
+    if (safariVersionMatch) {
+        deviceInfo.browser.name = BROWSER_NAMES.SAFARI;
+        deviceInfo.browser.version = safariVersionMatch[1];
+        // Safari uses WebKit engine
+        const webkitMatch = userAgent.match(USER_AGENT_REGEX.WEBKIT_ENGINE);
+        if (webkitMatch && webkitMatch[1]) {
+            deviceInfo.engine.name = 'WebKit';
+            deviceInfo.engine.version = webkitMatch[1];
+        }
+        return;
+    }
+
+    // 6. Internet Explorer
     const ieMatch = userAgent.match(USER_AGENT_REGEX.INTERNET_EXPLORER);
     if (ieMatch) {
-        deviceInfo.browser = BROWSER_NAMES.INTERNET_EXPLORER;
-        deviceInfo.browserVersion = ieMatch[1] || ieMatch[2];
+        deviceInfo.browser.name = BROWSER_NAMES.INTERNET_EXPLORER;
+        deviceInfo.browser.version = ieMatch[1] || ieMatch[2]; // IE10- vs IE11+
+        // IE uses Trident engine
+        const tridentMatch = userAgent.match(USER_AGENT_REGEX.TRIDENT_ENGINE);
+        if (tridentMatch && tridentMatch[1]) {
+            deviceInfo.engine.name = 'Trident';
+            deviceInfo.engine.version = tridentMatch[1];
+        }
         return;
     }
 };
@@ -191,15 +254,37 @@ const _detectBrowser = (userAgent: string, deviceInfo: IDeviceInfo): void => {
  * The `type` property can be 'unknown', 'windows_phone', 'ios', 'android', 'pc'.
  * The `os` property will indicate the operating system (e.g., 'Windows Phone', 'iOS', 'Android', 'Windows', 'macOS', 'Linux').
  * The `osVersion` property will provide the version of the operating system if detectable.
- * The `isMobile` and `isTablet` booleans indicate the device's form factor.
  * The `browser` property will contain the browser name (e.g., 'Edge', 'Opera', 'Firefox', 'Chrome', 'Safari', 'Internet Explorer').
  * The `browserVersion` property will provide the version of the detected browser.
  */
-const getDeviceType = (userAgent: string): IDeviceInfo => {
+const getDeviceType = (
+    userAgent: string,
+    platform: string = ''
+): IDeviceInfo => {
+    // Initialize deviceInfo with default 'unknown' values
     const deviceInfo: IDeviceInfo = {
-        type: 'unknown',
-        isMobile: false,
-        isTablet: false,
+        userAgentString: userAgent,
+        device: {
+            type: DEVICE_TYPES.UNKNOWN,
+            name: 'unknown',
+            model: 'unknown',
+            manufacturer: 'unknown',
+        },
+        engine: {
+            name: 'unknown',
+            version: 'unknown',
+        },
+        os: {
+            name: OS_NAMES.UNKNOWN,
+            version: undefined, // undefined initially, will be populated if detected
+            architecture: undefined, // undefined initially, will be populated if detected
+        },
+        browser: {
+            name: BROWSER_NAMES.UNKNOWN,
+            version: 'unknown',
+        },
+        platform: platform, // Can be passed as an argument if available (e.g., navigator.platform)
+        isBot: false, // Requires separate bot detection logic
     };
 
     _detectOSAndDevice(userAgent, deviceInfo);
@@ -209,7 +294,7 @@ const getDeviceType = (userAgent: string): IDeviceInfo => {
 };
 
 /**
- * Exports the `getDeviceType` function for use in CommonJS environments.
+ * Exports the `getDeviceType` function for use in ESM environments.
  * @type {function(): IDeviceInfo}
  */
 export default getDeviceType;
