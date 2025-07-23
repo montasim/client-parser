@@ -63,7 +63,9 @@
     "access": "public"
   },
   "scripts": {
-    "build": "eslint . --fix && prettier . --write && tsc --build && node scripts/compress.js",
+    "build:esm": "tsc --build tsconfig.json",
+    "build:cjs": "tsc --build tsconfig.cjs.json",
+    "build": "rimraf dist && npm run build:esm && npm run build:cjs",
     "test": "jest",
     "test:watch": "jest --watch",
     "eslint:check": "eslint .",
