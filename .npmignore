@@ -50,7 +50,7 @@ node_modules/
 # the size of the published package.
 
 # Unit or integration test files
-test/
+__tests__/
 
 # Jest configuration file for testing
 jest.config.ts
