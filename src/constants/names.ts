@@ -19,7 +19,7 @@
  * @readonly
  * @enum {string}
  */
-export const DEVICE_TYPES = {
+export const DEVICE_TYPES = Object.freeze({
     /** Represents an unknown or uncategorized device type. */
     UNKNOWN: 'unknown',
     /** Represents a Windows Phone device. */
@@ -30,7 +30,7 @@ export const DEVICE_TYPES = {
     ANDROID: 'android',
     /** Represents a personal computer (desktop or laptop). */
     PC: 'pc',
-};
+} as const);
 
 /**
  * Defines standardized string values for common operating system names.
@@ -38,7 +38,7 @@ export const DEVICE_TYPES = {
  * @readonly
  * @enum {string}
  */
-export const OS_NAMES = {
+export const OS_NAMES = Object.freeze({
     /** Represents the Windows Phone operating system. */
     WINDOWS_PHONE: 'Windows Phone',
     /** Represents the iOS operating system. */
@@ -51,7 +51,7 @@ export const OS_NAMES = {
     MACOS: 'macOS',
     /** Represents the Linux operating system. */
     LINUX: 'Linux',
-};
+} as const);
 
 /**
  * Defines standardized string values for common browser names.
@@ -59,7 +59,7 @@ export const OS_NAMES = {
  * @readonly
  * @enum {string}
  */
-export const BROWSER_NAMES = {
+export const BROWSER_NAMES = Object.freeze({
     /** Represents the Microsoft Edge browser. */
     EDGE: 'Edge',
     /** Represents the Opera browser. */
@@ -72,4 +72,4 @@ export const BROWSER_NAMES = {
     SAFARI: 'Safari',
     /** Represents the Internet Explorer browser. */
     INTERNET_EXPLORER: 'Internet Explorer',
-};
+} as const);

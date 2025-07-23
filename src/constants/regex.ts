@@ -18,7 +18,7 @@
  * @readonly
  * @enum {RegExp}
  */
-const USER_AGENT_REGEX = {
+const USER_AGENT_REGEX = Object.freeze({
     /** Regular expression to detect Windows Phone. */
     WINDOWS_PHONE: /Windows Phone/i,
     /** Regular expression to extract a Windows Phone version. */
@@ -63,6 +63,6 @@ const USER_AGENT_REGEX = {
     NOT_ANDROID: /Android/i,
     /** Regular expression to ensure the browser is not Chrome, CriOS, Edge, Opera, or Firefox (for Safari detection). */
     NOT_CHROME_CRIOS_EDGE_OPERA_FIREFOX: /Chrome|CriOS|Edg|OPR|Firefox/i,
-};
+} as const);
 
 export default USER_AGENT_REGEX;
