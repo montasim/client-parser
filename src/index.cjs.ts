@@ -2,8 +2,9 @@
  * @fileoverview Provides a utility function to detect detailed device information based on the User Agent string.
  * This module exports a function `getDeviceType` that analyzes the browser's User Agent
  * to determine the operating system, device type (mobile, tablet, PC), browser name, and browser version.
+ * It's designed for CommonJS environments.
  *
- * @module src/index.ts
+ * @module src/index.cjs.ts
  * @version 1.0.0
  * @license CC BY-NC-ND 4.0
  *
@@ -17,7 +18,9 @@ import { IDeviceInfo } from './interfaces/interface';
 
 /**
  * Detects the operating system and device type (mobile, tablet, PC) based on the User Agent string.
- * This private helper function modifies the `deviceInfo` object in place.
+ * This private helper function modifies the `deviceInfo` object in place, populating it with
+ * the detected OS, OS version, device type ('windows_phone', 'ios', 'android', 'pc'), and
+ * boolean flags for `isMobile` and `isTablet`.
  *
  * @private
  * @param {string} userAgent The browser's User Agent string.
@@ -28,7 +31,6 @@ const _detectOSAndDevice = (
     userAgent: string,
     deviceInfo: IDeviceInfo
 ): void => {
-    // Windows Phone (before Android and iOS)
     if (/Windows Phone/i.test(userAgent)) {
         deviceInfo.type = 'windows_phone';
         deviceInfo.os = 'Windows Phone';
@@ -40,7 +42,6 @@ const _detectOSAndDevice = (
         return;
     }
 
-    // iPad detection
     if (/iPad.*OS ([\d_]+)/i.test(userAgent)) {
         deviceInfo.type = 'ios';
         deviceInfo.os = 'iOS';
@@ -53,7 +54,6 @@ const _detectOSAndDevice = (
         return;
     }
 
-    // iPhone
     const iPhoneMatch = userAgent.match(/iPhone.*OS ([\d_]+)/i);
     if (iPhoneMatch) {
         deviceInfo.type = 'ios';
@@ -64,7 +64,6 @@ const _detectOSAndDevice = (
         return;
     }
 
-    // Android (more specific to avoid Windows Phone false positives)
     const androidMatch = userAgent.match(/Android ([\d.]+)/i);
     if (androidMatch && !/Windows Phone/i.test(userAgent)) {
         deviceInfo.type = 'android';
@@ -81,7 +80,6 @@ const _detectOSAndDevice = (
         return;
     }
 
-    // Windows PC
     const windowsMatch = userAgent.match(/Windows NT ([\d.]+)/i);
     if (windowsMatch) {
         deviceInfo.type = 'pc';
@@ -90,7 +88,6 @@ const _detectOSAndDevice = (
         return;
     }
 
-    // macOS (only if not iPad or iPhone)
     if (
         /Macintosh.*Mac OS X ([\d_]+)/i.test(userAgent) &&
         !/iPad|iPhone/i.test(userAgent)
@@ -104,7 +101,6 @@ const _detectOSAndDevice = (
         return;
     }
 
-    // Linux
     if (/Linux/i.test(userAgent) && !/Android/i.test(userAgent)) {
         deviceInfo.type = 'pc';
         deviceInfo.os = 'Linux';
@@ -114,7 +110,8 @@ const _detectOSAndDevice = (
 
 /**
  * Detects the browser name and version based on the User Agent string.
- * This private helper function modifies the `deviceInfo` object in place.
+ * This private helper function modifies the `deviceInfo` object in place,
+ * populating it with the detected `browser` name and `browserVersion`.
  *
  * @private
  * @param {string} userAgent The browser's User Agent string.
@@ -122,7 +119,6 @@ const _detectOSAndDevice = (
  * @returns {void}
  */
 const _detectBrowser = (userAgent: string, deviceInfo: IDeviceInfo): void => {
-    // Edge (Chromium)
     const edgeMatch = userAgent.match(/Edg(?:e|)\/([\d.]+)/i);
     if (edgeMatch) {
         deviceInfo.browser = 'Edge';
@@ -130,7 +126,6 @@ const _detectBrowser = (userAgent: string, deviceInfo: IDeviceInfo): void => {
         return;
     }
 
-    // Opera
     const operaMatch = userAgent.match(/OPR\/([\d.]+)/i);
     if (operaMatch) {
         deviceInfo.browser = 'Opera';
@@ -138,7 +133,6 @@ const _detectBrowser = (userAgent: string, deviceInfo: IDeviceInfo): void => {
         return;
     }
 
-    // Firefox
     const firefoxMatch = userAgent.match(/Firefox\/([\d.]+)/i);
     if (firefoxMatch) {
         deviceInfo.browser = 'Firefox';
@@ -146,7 +140,6 @@ const _detectBrowser = (userAgent: string, deviceInfo: IDeviceInfo): void => {
         return;
     }
 
-    // Chrome / CriOS (only if not Edge or Opera)
     const chromeMatch = userAgent.match(/(?:Chrome|CriOS)\/([\d.]+)/i);
     if (chromeMatch && !/Edg|OPR/i.test(userAgent)) {
         deviceInfo.browser = 'Chrome';
@@ -154,7 +147,6 @@ const _detectBrowser = (userAgent: string, deviceInfo: IDeviceInfo): void => {
         return;
     }
 
-    // Safari (only if not Chrome, Edge, Opera, or Firefox)
     if (
         /Safari\/([\d.]+)/i.test(userAgent) &&
         !/Chrome|CriOS|Edg|OPR|Firefox/i.test(userAgent)
@@ -167,7 +159,6 @@ const _detectBrowser = (userAgent: string, deviceInfo: IDeviceInfo): void => {
         return;
     }
 
-    // Internet Explorer
     const ieMatch = userAgent.match(/MSIE ([\d.]+)|Trident\/.+?rv:([\d.]+)/i);
     if (ieMatch) {
         deviceInfo.browser = 'Internet Explorer';
@@ -178,17 +169,17 @@ const _detectBrowser = (userAgent: string, deviceInfo: IDeviceInfo): void => {
 
 /**
  * Detects detailed information about the device based on the browser's User Agent string.
- * This function utilizes private helper functions `_detectOSAndDevice` and `_detectBrowser`
- * to populate an `IDeviceInfo` object.
+ * This function retrieves the User Agent from `navigator.userAgent` and then
+ * calls private helper functions to parse the OS, device type, browser name, and version.
  *
- * @returns {IDeviceInfo} An object containing detailed device information,
- * including operating system, device type (mobile, tablet, PC), browser name, and browser version.
- * The `type` property can be 'unknown', 'windows_phone', 'ios', 'android', 'pc'.
- * The `os` property will indicate the operating system (e.g., 'Windows Phone', 'iOS', 'Android', 'Windows', 'macOS', 'Linux').
- * The `osVersion` property will provide the version of the operating system if detectable.
- * The `isMobile` and `isTablet` booleans indicate the device's form factor.
- * The `browser` property will contain the browser name (e.g., 'Edge', 'Opera', 'Firefox', 'Chrome', 'Safari', 'Internet Explorer').
- * The `browserVersion` property will provide the version of the detected browser.
+ * @returns {IDeviceInfo} An object containing detailed device information.
+ * - `type`: {@link IDeviceInfo['type']} The general type of device ('unknown', 'windows_phone', 'ios', 'android', 'pc').
+ * - `isMobile`: {@link IDeviceInfo['isMobile']} A boolean indicating if the device is a mobile phone.
+ * - `isTablet`: {@link IDeviceInfo['isTablet']} A boolean indicating if the device is a tablet.
+ * - `os`: {@link IDeviceInfo['os']} The operating system name (e.g., 'Windows Phone', 'iOS', 'Android', 'Windows', 'macOS', 'Linux').
+ * - `osVersion`: {@link IDeviceInfo['osVersion']} The version of the operating system (if detectable).
+ * - `browser`: {@link IDeviceInfo['browser']} The name of the browser (e.g., 'Edge', 'Opera', 'Firefox', 'Chrome', 'Safari', 'Internet Explorer').
+ * - `browserVersion`: {@link IDeviceInfo['browserVersion']} The version of the browser (if detectable).
  */
 const getDeviceType = (): IDeviceInfo => {
     const userAgent = navigator.userAgent;
@@ -205,4 +196,4 @@ const getDeviceType = (): IDeviceInfo => {
     return deviceInfo;
 };
 
-export default getDeviceType;
+module.exports = getDeviceType;
