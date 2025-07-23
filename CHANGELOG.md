@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.5 (2025-07-23)
+
+
+### Code Refactoring
+
+* implemented eslint and prettier fix ([1019aeb](https://github.com/montasim/client-parser/commit/1019aeb88c22c5ec04e23ab9c62e1db031b560c8))
+
 ### 0.0.4 (2025-07-23)
 
 ### 0.0.3 (2025-07-23)
