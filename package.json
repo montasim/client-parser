@@ -75,11 +75,13 @@
     "release": "HUSKY_SKIP_HOOKS=1 standard-version && git push --follow-tags",
     "release:minor": "standard-version --release-as minor && git push --follow-tags",
     "release:major": "standard-version --release-as major && git push --follow-tags",
-    "release:patch": "standard-version --release-as patch && git push --follow-tags"
+    "release:patch": "standard-version --release-as patch && git push --follow-tags",
+    "postinstall": "node welcome.js"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
+    "@types/figlet": "^1.7.0",
     "@types/jest": "^30.0.0",
     "@types/jsdom": "^21.1.7",
     "@typescript-eslint/eslint-plugin": "^8.22.0",
@@ -99,5 +101,9 @@
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "figlet": "^1.8.2"
   }
 }
