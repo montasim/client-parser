@@ -9,11 +9,13 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
+    "declaration": false,
+    "declarationMap": false,
     "forceConsistentCasingInFileNames": true,
-    "sourceMap": true,
-    "lib": ["ES2020"]
+    "sourceMap": false,
+    "lib": ["ES2020"],
+    "removeComments": false,
+    "preserveConstEnums": true
   },
   "include": ["src/index.ts"],
   "exclude": ["node_modules", "build", "dist", "__tests__"]
