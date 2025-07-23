@@ -60,7 +60,7 @@ async function bundleAndMinify({ entry, outDir, outfileName, format, ext }) {
 
         console.info('📦 Building & compressing CJS → dist/cjs');
         await bundleAndMinify({
-            entry: 'src/index.test.cts',
+            entry: 'src/index.cts',
             outDir: 'dist/cjs',
             outfileName: 'index', // ← just “index”
             format: 'cjs',
