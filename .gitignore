@@ -218,7 +218,7 @@ next-env.d.ts
 # should not be committed to avoid conflicting with consumers’ installs.
 
 # npm lockfile
-package-lock.json
+# package-lock.json
 
 # pnpm lockfile
 pnpm-lock.yaml
