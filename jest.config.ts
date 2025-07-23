@@ -19,7 +19,7 @@
  */
 export default {
     /** The test environment in which the tests will run (Node.js). */
-    testEnvironment: 'node',
+    testEnvironment: 'jest-environment-jsdom',
 
     /**
      * Transforms TypeScript files using ts-jest to make them compatible with Jest.
