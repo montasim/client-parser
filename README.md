@@ -8,7 +8,7 @@
 </div>
 <!-- repository summary badges end -->
 
-The [client-parser](https://www.npmjs.com/package/client-parser) is a lightweight and comprehensive utility providing standardized MIME types for applications. It simplifies the handling of file format identification by offering predefined constants, ensuring clarity and consistency in file processing and serving.
+The [client-parser](https://www.npmjs.com/package/client-parser) is a utility to detect detailed device information from the browser's User Agent string.
 
 ## Table of Contents
 
