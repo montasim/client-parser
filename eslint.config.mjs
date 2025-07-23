@@ -22,7 +22,6 @@
  */
 
 import globals from 'globals';
-import pluginJs from '@eslint/js';
 import parser from '@typescript-eslint/parser';
 import pluginTs from '@typescript-eslint/eslint-plugin';
 
@@ -74,9 +73,6 @@ export default [
          * Combines recommended rules from JavaScript and TypeScript plugins with project-specific adjustments.
          */
         rules: {
-            // Recommended JavaScript rules
-            ...pluginJs.configs.recommended.rules,
-
             // Recommended TypeScript rules
             ...pluginTs.configs.recommended.rules,
 
