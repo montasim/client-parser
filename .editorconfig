@@ -23,8 +23,8 @@ root = true
 #   should be used for indentation.
 # - `indent_size = 4`: Sets the visual space equivalent to 4 spaces
 #   for each level of indentation.
-# - `end_of_line = crlf`: Enforces the use of carriage return plus
-#   line feed (CRLF) as the newline character, commonly used in Windows.
+# - `end_of_line = lf`: Enforces the use of carriage return plus
+#   line feed (LF) as the newline character, commonly used in Windows.
 # - `trim_trailing_whitespace = true`: Automatically removes all
 #   unnecessary whitespace at the end of a line.
 # - `insert_final_newline = true`: Ensures every file ends with a
@@ -35,7 +35,7 @@ root = true
 charset = utf-8
 indent_style = space
 indent_size = 4
-end_of_line = crlf
+end_of_line = lf
 trim_trailing_whitespace = true
 insert_final_newline = true
 max_line_length = 80

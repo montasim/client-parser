@@ -1,18 +1,5 @@
 #!/usr/bin/env node
 
-/**
- * @fileoverview This script generates and displays a styled "client-parser" ASCII art logo
- * along with a signature including a clickable GitHub link in the console. It uses `chalk`
- * for terminal styling and `figlet` for ASCII art generation.
- *
- * @author Mohammad Montasim -Al- Mamun Shuvo
- * @contact montasimmamun@gmail.com
- * @contactGithub https://github.com/montasim
- * @version 1.0.0
- * @license CC BY-NC-ND 4.0
- * @created 2025-07-23
- */
-
 import chalk from 'chalk';
 import figlet from 'figlet';
 

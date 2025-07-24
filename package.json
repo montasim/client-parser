@@ -15,6 +15,7 @@
   },
   "files": [
     "dist",
+    "CHANGELOG.md",
     "README.md"
   ],
   "scripts": {
@@ -27,7 +28,7 @@
     "prettier:check": "prettier . --check",
     "prettier:fix": "prettier . --write",
     "lint:fix": "eslint . --fix && prettier . --write",
-    "prepare": "husky install",
+    "prepare": "husky",
     "commitlint": "commitlint --edit",
     "release": "HUSKY_SKIP_HOOKS=1 standard-version && git push --follow-tags",
     "release:minor": "standard-version --release-as minor && git push --follow-tags",
