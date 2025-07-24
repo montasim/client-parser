@@ -14,7 +14,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import getDeviceType from '../dist/esm/src/index.js';
+import getDeviceType from '../dist/index.js';
 import userAgents from '../data/sample_user_agents.json' with { type: 'json' };
 
 console.info('Detecting device info for provided User Agents...');
