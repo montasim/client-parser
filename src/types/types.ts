@@ -1,19 +1,3 @@
-/**
- * @fileoverview Defines the interface for device information.
- * This file specifies the structure of the `IDeviceInfo` object,
- * which is used to store detailed information about the detected device,
- * including its operating system, device type, and browser details.
- *
- * @module interfaces/interfaces.ts
- * @version 1.0.0
- * @license CC BY-NC-ND 4.0
- *
- * @contact Mohammad Montasim -Al- Mamun Shuvo
- * @created 2025-07-23
- * @contactEmail montasimmamun@gmail.com
- * @contactGithub https://github.com/montasim
- */
-
 import { DEVICE_TYPES, OS_NAMES, BROWSER_NAMES } from '../constants/names';
 
 /**

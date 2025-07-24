@@ -1,18 +1,4 @@
 /**
- * @fileoverview Defines a collection of regular expressions used for parsing User Agent strings.
- * These regex patterns help in detecting operating systems, device types, and browser information.
- *
- * @module src/constants/regex
- * @version 1.0.0
- * @license CC BY-NC-ND 4.0
- *
- * @contact Mohammad Montasim -Al- Mamun Shuvo
- * @created 2025-07-23
- * @contactEmail montasimmamun@gmail.com
- * @contactGithub https://github.com/montasim
- */
-
-/**
  * A collection of regular expressions used for detecting various device and browser details
  * from a User Agent string.
  * @readonly

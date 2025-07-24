@@ -27,10 +27,11 @@ The [client-parser](https://www.npmjs.com/package/client-parser) is a utility to
 1. **Detailed Device Detection:** Identifies general device categories (Android, iOS, Windows Phone, PC, unknown).
 2. **Operating System Information:** Extracts OS name (e.g., Android, iOS, Windows, macOS, Linux) and version.
 3. **Browser Information:** Detects browser name (e.g., Chrome, Safari, Firefox, Edge) and version.
-4. **Mobile/Tablet Flags:** Provides boolean flags (`isMobile`, `isTablet`) for quick checks.
-5. **TypeScript Support:** Includes strong type definitions (`DeviceInfo` interface) for enhanced code safety and developer experience.
-6. **Lightweight & Efficient:** Minimal footprint with high performance.
-7. **Easy Integration:** Seamlessly integrates with any Node.js or TypeScript-based project.
+4. **Rendering Engine Detection:** Identifies the browser's rendering engine (e.g., `Blink`, `Gecko`, `WebKit`, `Trident`) and its version.
+5. **Mobile/Tablet Flags:** Provides boolean flags (`isMobile`, `isTablet`) for quick checks.
+6. **TypeScript Support:** Includes strong type definitions (`DeviceInfo` interface) for enhanced code safety and developer experience.
+7. **Lightweight & Efficient:** Minimal footprint with high performance.
+8. **Easy Integration:** Seamlessly integrates with any Node.js or TypeScript-based project.
 
 ---
 
@@ -69,7 +70,10 @@ bun add client-parser
 ```javascript
 const getDeviceType = require('client-parser');
 
-const deviceInfo = getDeviceType();
+const userAgentString =
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0.1 Mobile/15E148 Safari/604.1';
+const platformString = 'iPhone';
+const deviceInfo = getDeviceType(userAgentString, platformString);
 
 // Log some of the detected information
 console.log('Device Type:', deviceInfo.type); // Outputs: e.g., "pc", "android", "ios", "unknown"
@@ -84,7 +88,10 @@ console.log('Is Tablet:', deviceInfo.isTablet); // Outputs: true or false
 ```javascript
 import getDeviceType from 'client-parser';
 
-const deviceInfo = getDeviceType();
+const userAgentString =
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0.1 Mobile/15E148 Safari/604.1';
+const platformString = 'iPhone';
+const deviceInfo = getDeviceType(userAgentString, platformString);
 
 // Log some of the detected information
 console.log('Device Type:', deviceInfo.type); // Outputs: e.g., "pc", "android", "ios", "unknown"
@@ -99,7 +106,13 @@ console.log('Is Tablet:', deviceInfo.isTablet); // Outputs: true or false
 ```typescript
 import getDeviceType, { IDeviceInfo } from 'client-parser';
 
-const currentDevice: IDeviceInfo = getDeviceType();
+const desktopUserAgent: string =
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+const desktopPlatform: string = 'Win32';
+const currentDevice: IDeviceInfo = getDeviceType(
+    desktopUserAgent,
+    desktopPlatform
+);
 
 // Log some of the detected information
 console.log('Device Type:', deviceInfo.type); // Outputs: e.g., "pc", "android", "ios", "unknown"
@@ -116,38 +129,60 @@ console.log('Is Tablet:', deviceInfo.isTablet); // Outputs: true or false
 The getDeviceType() function returns an object conforming to the DeviceInfo interface, providing comprehensive details about the client's environment.
 
 ```typescript
-export interface DeviceInfo {
-    /** The general category of the device: "android", "ios", "windows_phone", "pc", or "unknown". */
-    type: 'android' | 'ios' | 'windows_phone' | 'pc' | 'unknown';
-    /** The operating system name (e.g., "Android", "iOS", "Windows", "macOS", "Linux"). */
-    os?: string;
-    /** The version of the operating system. */
-    osVersion?: string;
-    /** True if the device is likely a tablet, false otherwise. */
-    isTablet?: boolean;
-    /** True if the device is a mobile phone or tablet, false otherwise. */
-    isMobile?: boolean;
-    /** The name of the browser (e.g., "Chrome", "Safari", "Firefox", "Edge", "IE", "Opera"). */
-    browser?: string;
-    /** The version of the browser. */
-    browserVersion?: string;
+export interface IDeviceInfo {
+    /** The raw User Agent string used for detection. */
+    userAgentString: string;
+    /** Information about the device itself. */
+    device: {
+        /** The general category of the device: "android", "ios", "windows_phone", "pc", or "unknown". */
+        type: 'android' | 'ios' | 'windows_phone' | 'pc' | 'unknown';
+        /** A more specific name for the device (e.g., "iPhone", "iPad", "Android Phone", "Windows PC"). */
+        name: string;
+        /** Placeholder for device model (currently 'unknown'). */
+        model: string;
+        /** Placeholder for device manufacturer (currently 'unknown'). */
+        manufacturer: string;
+    };
+    /** Information about the browser's rendering engine. */
+    engine: {
+        /** The name of the rendering engine (e.g., "Blink", "Gecko", "WebKit", "Trident"). */
+        name: string;
+        /** The version of the rendering engine. */
+        version: string;
+    };
+    /** Information about the operating system. */
+    os: {
+        /** The name of the operating system (e.g., "Android", "iOS", "Windows Phone", "Windows", "macOS", "Linux"). */
+        name: string;
+        /** The version of the operating system. Undefined if not detectable. */
+        version?: string;
+        /** Placeholder for OS architecture (currently undefined). */
+        architecture?: string;
+    };
+    /** Information about the browser. */
+    browser: {
+        /** The name of the browser (e.g., "Edge", "Opera", "Firefox", "Chrome", "Safari", "Internet Explorer"). */
+        name: string;
+        /** The version of the browser. */
+        version: string;
+    };
+    /** The value of navigator.platform, if provided. */
+    platform: string;
+    /** A boolean indicating if the user agent is detected as a bot (currently always false, requires separate logic). */
+    isBot: boolean;
 }
 ```
 
 ### Possible Values and Examples:
 
-- type:
-    - "android": Android phones and tablets.
-    - "ios": iPhones, iPads, iPods.
-    - "windows_phone": Devices running Windows Phone OS.
-    - "pc": Desktop/laptop computers (Windows, macOS, Linux).
-    - "unknown": Any other or unrecognized device types.
-- os: "Android", "iOS", "Windows Phone", "Windows", "macOS", "Linux".
-- osVersion: E.g., "13", "17.0.3", "10.0", "10_15_7".
-- isTablet: true or false.
-- isMobile: true or false.
-- browser: "Chrome", "Firefox", "Safari", "Edge", "Opera", "Internet Explorer".
-- browserVersion: E.g., "100.0.4896.127", "119.0", "17.0".
+- **device.type:** "android", "ios", "windows_phone", "pc", "unknown"
+- **device.name:** "Android Phone", "Android Tablet", "iPhone", "iPad", "iPod Touch", "Windows Phone", "Windows PC", "macOS PC", "Linux PC", "unknown"
+- **engine.name:** "Blink", "Gecko", "WebKit", "Trident", "Presto", "unknown"
+- **engine.version:** E.g., "537.36", "20100101", "605.1.15", "7.0"
+- **os.name:** "Android", "iOS", "Windows Phone", "Windows", "macOS", "Linux", "unknown"
+- **os.version:** E.g., "13", "17.0.3", "10.0", "10.15.7"
+- **browser.name:** "Edge", "Opera", "Firefox", "Chrome", "Safari", "Internet Explorer", "unknown"
+- **browser.version:** E.g., "120.0.2210.144", "105.0.0.0", "119.0", "120.0.0.0", "17.0.1", "11.0"
 
 ## License
 

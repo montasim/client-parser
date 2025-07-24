@@ -2,25 +2,38 @@
   "name": "client-parser",
   "version": "0.0.14",
   "description": "A utility to detect the device type (Android, iOS, Windows Phone, PC, unknown) based on the User Agent string.",
-  "type": "module",
-  "main": "./dist/cjs/src/index.js",
-  "module": "./dist/esm/src/index.js",
-  "types": "./dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/src/index.js",
-      "import": "./dist/esm/src/index.js",
-      "types": "./dist/types/index.d.ts"
-    }
-  },
-  "files": [
-    "dist/cjs/src",
-    "dist/esm/src",
-    "dist/types/src"
-  ],
   "engines": {
     "node": ">=20.x",
     "pnpm": ">=10.x"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "detect-ua": "ts-node scripts/detectDevices.js",
+    "build": "rimraf dist && tsup src/index.ts --dts --format esm,cjs --out-dir dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "eslint:check": "eslint .",
+    "eslint:fix": "eslint . --fix",
+    "prettier:check": "prettier . --check",
+    "prettier:fix": "prettier . --write",
+    "lint:fix": "eslint . --fix && prettier . --write",
+    "prepare": "husky install",
+    "commitlint": "commitlint --edit",
+    "release": "HUSKY_SKIP_HOOKS=1 standard-version && git push --follow-tags",
+    "release:minor": "standard-version --release-as minor && git push --follow-tags",
+    "release:major": "standard-version --release-as major && git push --follow-tags",
+    "release:patch": "standard-version --release-as patch && git push --follow-tags"
   },
   "keywords": [
     "device",
@@ -63,54 +76,19 @@
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
-    "detect-ua": "ts-node scripts/detectDevices.js",
-    "build": "rimraf dist && npm run build:esm && npm run build:cjs && npm run build:types",
-    "build:esm": "tsc --project tsconfig.build.json --outDir dist/esm --module esnext",
-    "build:cjs": "tsc --project tsconfig.build.json --outDir dist/cjs --module commonjs",
-    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir dist/types",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "eslint:check": "eslint .",
-    "eslint:fix": "eslint . --fix",
-    "prettier:check": "prettier . --check",
-    "prettier:fix": "prettier . --write",
-    "lint:fix": "eslint . --fix && prettier . --write",
-    "prepare": "husky install",
-    "commitlint": "commitlint --edit",
-    "release": "HUSKY_SKIP_HOOKS=1 standard-version && git push --follow-tags",
-    "release:minor": "standard-version --release-as minor && git push --follow-tags",
-    "release:major": "standard-version --release-as major && git push --follow-tags",
-    "release:patch": "standard-version --release-as patch && git push --follow-tags",
-    "postinstall": "node bin/welcome.js"
-  },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.1",
-    "@commitlint/config-conventional": "^19.6.0",
-    "@types/figlet": "^1.7.0",
+    "@commitlint/config-conventional": "^19.8.1",
     "@types/jest": "^30.0.0",
-    "@types/jsdom": "^21.1.7",
-    "@typescript-eslint/eslint-plugin": "^8.22.0",
-    "@typescript-eslint/parser": "^8.22.0",
-    "esbuild": "^0.25.8",
-    "eslint": "^9.19.0",
-    "eslint-plugin-prettier": "^5.5.3",
-    "eslint-plugin-security": "^3.0.1",
-    "globals": "^16.3.0",
-    "husky": "^9.1.4",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "commitlint": "^19.8.1",
+    "eslint": "^9.31.0",
+    "husky": "^9.1.7",
     "jest": "^30.0.5",
-    "jest-environment-jsdom": "^30.0.5",
-    "lint-staged": "^15.2.9",
-    "prettier": "^3.3.3",
+    "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
-    "standard-version": "^9.5.0",
-    "terser": "^5.37.0",
     "ts-jest": "^29.4.0",
-    "ts-node": "^10.9.2",
+    "tsup": "^8.5.0",
     "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "chalk": "^5.4.1",
-    "figlet": "^1.8.2"
   }
 }

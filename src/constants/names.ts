@@ -1,19 +1,4 @@
 /**
- * @fileoverview Defines constants for various device types, operating system names, and browser names.
- * These constants are used to standardize string values across the application, improving type safety
- * and maintainability.
- *
- * @module src/constants/names
- * @version 1.0.0
- * @license CC BY-NC-ND 4.0
- *
- * @contact Mohammad Montasim -Al- Mamun Shuvo
- * @created 2025-07-23
- * @contactEmail montasimmamun@gmail.com
- * @contactGithub https://github.com/montasim
- */
-
-/**
  * Defines standardized string values for different device types.
  * These values are used to categorize devices detected via the User Agent string.
  * @readonly

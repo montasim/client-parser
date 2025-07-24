@@ -1,25 +1,7 @@
-/**
- * @fileoverview Jest tests for the `getDeviceType` utility function.
- * This file contains a series of unit tests to verify that `getDeviceType` accurately
- * detects the operating system, device type (mobile, tablet, PC), browser name, and browser version
- * based on various mocked User Agent strings.
- *
- * @module __tests__/index.test.ts
- * @version 1.0.0
- * @license CC BY-NC-ND 4.0
- *
- * @contact Mohammad Montasim -Al- Mamun Shuvo
- * @created 2025-07-23
- * @contactEmail montasimmamun@gmail.com
- * @contactGithub https://github.com/montasim
- */
-
-/**
- * @jest-environment jsdom
- */
-
+import { IDeviceInfo } from '../src/types/types';
 import getDeviceType from '../src';
 import userAgentTestCases from '../data/detected_device_info.json';
+const testCases = userAgentTestCases as IDeviceInfo[];
 
 /**
  * Test suite for the `getDeviceType` utility function.
@@ -29,7 +11,7 @@ describe('getDeviceType', () => {
     /**
      * Test case: Should correctly detect an Android phone and its details.
      */
-    userAgentTestCases.forEach((testCase) => {
+    testCases.forEach((testCase: IDeviceInfo) => {
         it(`should correctly detect device info for: ${testCase.userAgentString.substring(0, 50)}...`, () => {
             const result = getDeviceType(testCase.userAgentString);
 

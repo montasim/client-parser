@@ -1,18 +1,3 @@
-/**
- * @fileoverview Provides a utility function to detect detailed device information based on the User Agent string.
- * This module exports a function `getDeviceType` that analyzes the browser's User Agent
- * to determine the operating system, device type (mobile, tablet, PC), browser name, and browser version.
- *
- * @module src/index.ts
- * @version 1.0.0
- * @license CC BY-NC-ND 4.0
- *
- * @contact Mohammad Montasim -Al- Mamun Shuvo
- * @created 2025-07-23
- * @contactEmail montasimmamun@gmail.com
- * @contactGithub https://github.com/montasim
- */
-
 import { IDeviceInfo } from './types/types';
 import USER_AGENT_REGEX from './constants/regex';
 import { DEVICE_TYPES, OS_NAMES, BROWSER_NAMES } from './constants/names';
