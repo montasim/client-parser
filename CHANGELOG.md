@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.13 (2025-07-24)
+
+
+### Code Refactoring
+
+* setup config ([4b05728](https://github.com/montasim/client-parser/commit/4b05728c612796d894be4ef4407715bb1f9fa52c))
+
 ### 0.0.12 (2025-07-23)
 
 
