@@ -1,6 +1,6 @@
 {
   "name": "client-parser",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "A utility to detect the device type (Android, iOS, Windows Phone, PC, unknown) based on the User Agent string.",
   "engines": {
     "node": ">=20.x",
