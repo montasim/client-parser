@@ -29,6 +29,8 @@
 
 src/
 
+data/
+
 
 ####################################################
 # DEPENDENCIES
@@ -112,7 +114,6 @@ commitlint.config.mjs
 
 # General output folder for build artifacts.
 dist/
-out/
 
 # General scripts folder for build scripts.
 scripts/

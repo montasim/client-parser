@@ -13,7 +13,7 @@
  * @contactGithub https://github.com/montasim
  */
 
-import { IDeviceInfo } from './interfaces/interface';
+import { IDeviceInfo } from './types/types';
 import USER_AGENT_REGEX from './constants/regex';
 import { DEVICE_TYPES, OS_NAMES, BROWSER_NAMES } from './constants/names';
 
