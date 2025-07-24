@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.15 (2025-07-24)
+
+
+### Bug Fixes
+
+* workflow issue ([977640e](https://github.com/montasim/client-parser/commit/977640e45f1a8d77615a634db446e7a807fdd44a))
+
 ### 0.0.14 (2025-07-24)
 
 
