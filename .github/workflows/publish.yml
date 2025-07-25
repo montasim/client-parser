@@ -1,4 +1,4 @@
-name: Build and Publish to NPM
+name: Build, Test, and Publish to NPM
 
 on:
     push:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
     build-test-publish:
-        name: Build and Publish to NPM
+        name: Build, Test, and Publish to NPM
         runs-on: ubuntu-latest
 
         steps:
@@ -31,31 +31,35 @@ jobs:
                   node-version: '20'
                   cache: 'npm'
 
-            # Step 4: Configure npm authentication for publishing
-            - name: Configure npm
-              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-              # This creates an .npmrc file with the NPM_TOKEN secret for authentication with npm registry
-
-            # Step 5: Install project dependencies
+            # Step 4: Install project dependencies
             - name: Install dependencies
               run: npm install
 
-            # Step 6: Fix Prettier formatting issues
+            # Step 5: Fix Prettier formatting issues
             - name: Fix Linting and Indentation issues
               run: npm run lint:fix
 
-            # Step 7: Build the project
+            # Step 6: Build the project
             - name: Build the project
               run: npm run build
 
-            # Step 8: Generate a new version and push tags
+            # Step 7: Test the project
+            - name: Test the project
+              run: npm run test
+
+            # Step 8: Configure npm authentication for publishing
+            # This creates an .npmrc file with the NPM_TOKEN secret for authentication with npm registry
+            - name: Configure npm
+              run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+            # Step 9: Generate a new version and push tags
             # HUSKY_SKIP_HOOKS=1 is used to bypass Git hooks during the release process
             - name: Generate a new version and push tags
               run: HUSKY_SKIP_HOOKS=1 npm run release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            # Step 9: Publish the package to npm registry
+            # Step 10: Publish the package to npm registry
             # This step runs only if all previous steps were successful
             - name: Publish to NPM
               if: success()
