@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.19 (2025-07-25)
+
+
+### Features
+
+* remove local dependency with npm ([499267e](https://github.com/montasim/client-parser/commit/499267e7fbfe9db626af743836696b6361b748a5))
+
 ### 0.0.18 (2025-07-24)
 
 ### 0.0.17 (2025-07-24)
