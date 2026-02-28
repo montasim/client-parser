@@ -10,6 +10,8 @@
 
 The [client-parser](https://www.npmjs.com/package/client-parser) is a utility to detect detailed device information from the browser's User Agent string.
 
+**🌐 Demo:** [https://client-parser-demo.netlify.app/](https://client-parser-demo.netlify.app/)
+
 ## Table of Contents
 
 - [Key Features](#key-features)
