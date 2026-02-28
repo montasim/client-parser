@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.21 (2026-02-28)
+
+
+### Documentation
+
+* add demo link to README ([9edbe63](https://github.com/montasim/client-parser/commit/9edbe6333a2b0e56a76d4d86cddfacd66b8fe44a))
+
 ### 0.0.20 (2025-07-25)
 
 ### 0.0.19 (2025-07-25)
