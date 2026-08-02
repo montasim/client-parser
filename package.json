@@ -1,6 +1,6 @@
 {
   "name": "client-parser",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A tiny, type-safe client classifier with User-Agent, Client Hints, and HTTP header support.",
   "keywords": [
     "user-agent",
@@ -28,7 +28,7 @@
   "bugs": {
     "url": "https://github.com/montasim/client-parser/issues"
   },
-  "homepage": "https://github.com/montasim/client-parser#readme",
+  "homepage": "https://client-parser-demo.netlify.app",
   "engines": {
     "node": ">=18"
   },
