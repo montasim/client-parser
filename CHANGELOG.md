@@ -1,75 +1,91 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project are documented here.
+
+## 0.1.0 (2026-08-02)
+
+### Added
+
+- New `parseClient`, `parseNavigator`, and `parseClientHintHeaders` APIs.
+- User-Agent Client Hints and case-insensitive HTTP header support.
+- Device form-factor, bot, detection-source, and confidence classifications.
+- Curated modern browser fixtures, security limits, coverage thresholds, and package entry-point tests.
+
+### Changed
+
+- Rebuilt the parser as dependency-free detector modules with a strict public type contract.
+- Corrected iOS engine, iPadOS desktop mode, Samsung Internet, Firefox iOS, ChromeOS, and legacy Opera handling.
+- Replaced placeholder values with optional properties.
+- Adopted the MIT license and Node.js 18+ support.
+- Modernized ESM/CommonJS exports, CI, and tag-based npm publishing.
+
+### Deprecated
+
+- `getDeviceType` is retained as an alias; use `parseClient` for new code.
+
+### Removed
+
+- Self-generated test expectations, obsolete scripts, and automatic publishing on every `main` push.
 
 ### 0.0.22 (2026-02-28)
 
 ### 0.0.21 (2026-02-28)
 
-
 ### Documentation
 
-* add demo link to README ([9edbe63](https://github.com/montasim/client-parser/commit/9edbe6333a2b0e56a76d4d86cddfacd66b8fe44a))
+- add demo link to README ([9edbe63](https://github.com/montasim/client-parser/commit/9edbe6333a2b0e56a76d4d86cddfacd66b8fe44a))
 
 ### 0.0.20 (2025-07-25)
 
 ### 0.0.19 (2025-07-25)
 
-
 ### Features
 
-* remove local dependency with npm ([499267e](https://github.com/montasim/client-parser/commit/499267e7fbfe9db626af743836696b6361b748a5))
+- remove local dependency with npm ([499267e](https://github.com/montasim/client-parser/commit/499267e7fbfe9db626af743836696b6361b748a5))
 
 ### 0.0.18 (2025-07-24)
 
 ### 0.0.17 (2025-07-24)
 
-
 ### Code Refactoring
 
-* setup ([80b0597](https://github.com/montasim/client-parser/commit/80b0597309d09c89dd1e4957135af1f11a953a52))
+- setup ([80b0597](https://github.com/montasim/client-parser/commit/80b0597309d09c89dd1e4957135af1f11a953a52))
 
 ### 0.0.16 (2025-07-24)
 
-
 ### Code Refactoring
 
-* decrease bundle size ([70defa8](https://github.com/montasim/client-parser/commit/70defa895a438f5ad29c22808d46328be86fde8c))
+- decrease bundle size ([70defa8](https://github.com/montasim/client-parser/commit/70defa895a438f5ad29c22808d46328be86fde8c))
 
 ### 0.0.15 (2025-07-24)
 
-
 ### Bug Fixes
 
-* workflow issue ([977640e](https://github.com/montasim/client-parser/commit/977640e45f1a8d77615a634db446e7a807fdd44a))
+- workflow issue ([977640e](https://github.com/montasim/client-parser/commit/977640e45f1a8d77615a634db446e7a807fdd44a))
 
 ### 0.0.14 (2025-07-24)
 
-
 ### Code Refactoring
 
-* decrease bundle size ([270536f](https://github.com/montasim/client-parser/commit/270536fcdeeaebab29cf89e15731b503f967ea4f))
+- decrease bundle size ([270536f](https://github.com/montasim/client-parser/commit/270536fcdeeaebab29cf89e15731b503f967ea4f))
 
 ### 0.0.13 (2025-07-24)
 
-
 ### Code Refactoring
 
-* setup config ([4b05728](https://github.com/montasim/client-parser/commit/4b05728c612796d894be4ef4407715bb1f9fa52c))
+- setup config ([4b05728](https://github.com/montasim/client-parser/commit/4b05728c612796d894be4ef4407715bb1f9fa52c))
 
 ### 0.0.12 (2025-07-23)
 
-
 ### Code Refactoring
 
-* detection mechanism ([0851ac7](https://github.com/montasim/client-parser/commit/0851ac7b46f8e8ae6a8d12ed875476430861b694))
+- detection mechanism ([0851ac7](https://github.com/montasim/client-parser/commit/0851ac7b46f8e8ae6a8d12ed875476430861b694))
 
 ### 0.0.11 (2025-07-23)
 
-
 ### Code Refactoring
 
-* build process ([73ceb32](https://github.com/montasim/client-parser/commit/73ceb3294882eed405a81f1e2c4d136c8112e26f))
+- build process ([73ceb32](https://github.com/montasim/client-parser/commit/73ceb3294882eed405a81f1e2c4d136c8112e26f))
 
 ### 0.0.10 (2025-07-23)
 
@@ -81,25 +97,22 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### 0.0.6 (2025-07-23)
 
-
 ### Code Refactoring
 
-* use module approach ([f2d8178](https://github.com/montasim/client-parser/commit/f2d81789c72235bbdbdfab385cddad3172067b88))
+- use module approach ([f2d8178](https://github.com/montasim/client-parser/commit/f2d81789c72235bbdbdfab385cddad3172067b88))
 
 ### 0.0.5 (2025-07-23)
 
-
 ### Code Refactoring
 
-* implemented eslint and prettier fix ([1019aeb](https://github.com/montasim/client-parser/commit/1019aeb88c22c5ec04e23ab9c62e1db031b560c8))
+- implemented eslint and prettier fix ([1019aeb](https://github.com/montasim/client-parser/commit/1019aeb88c22c5ec04e23ab9c62e1db031b560c8))
 
 ### 0.0.4 (2025-07-23)
 
 ### 0.0.3 (2025-07-23)
 
-
 ### Bug Fixes
 
-* build issue ([0d70003](https://github.com/montasim/client-parser/commit/0d700032c5dc35d57e4e1c83124cea559d6beb28))
+- build issue ([0d70003](https://github.com/montasim/client-parser/commit/0d700032c5dc35d57e4e1c83124cea559d6beb28))
 
 ### 0.0.2 (2025-07-23)
