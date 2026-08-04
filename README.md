@@ -3,8 +3,13 @@
 [![npm version](https://img.shields.io/npm/v/client-parser.svg)](https://www.npmjs.com/package/client-parser)
 [![CI](https://github.com/montasim/client-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/montasim/client-parser/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/client-parser.svg)](./LICENSE)
+[![Support on SupportKori](https://img.shields.io/badge/support-SupportKori-FFDD00)](https://www.supportkori.com/montasim)
 
 A tiny, type-safe client classifier with User-Agent, Client Hints, and HTTP header support.
+
+**[Try the live playground](https://client-parser-demo.netlify.app)** · **[Browse interactive documentation](https://client-parser-demo.netlify.app/docs)**
+
+## Why client-parser?
 
 - Zero runtime dependencies
 - Works in browsers, Node.js, edge runtimes, ESM, and CommonJS
@@ -19,6 +24,8 @@ A tiny, type-safe client classifier with User-Agent, Client Hints, and HTTP head
 ```sh
 npm install client-parser
 ```
+
+Consumers can use the built package on Node.js 18 or newer. The package ships ESM, CommonJS, and TypeScript declarations and has no runtime dependencies. Contributing from source requires a newer Node.js version; see [Development](#development).
 
 ## Quick start
 
@@ -177,6 +184,22 @@ Deprecated compatibility alias for `parseClient`. New code should use `parseClie
 
 All public interfaces and string unions are exported as TypeScript types.
 
+## Compatibility
+
+| Environment          | Support                                                                      |
+| -------------------- | ---------------------------------------------------------------------------- |
+| Node.js              | 18 or newer                                                                  |
+| Browsers             | Modern browsers and bundlers; User-Agent fallback works without Client Hints |
+| Edge/server runtimes | Plain header objects and `Headers`-compatible inputs                         |
+| Modules              | ESM and CommonJS                                                             |
+| TypeScript           | Declarations included                                                        |
+
+The package does not depend on DOM globals at import time. `parseNavigator` requires a navigator-like object supplied by browser code; the other entry points can be used server-side.
+
+## Configuration
+
+There are no environment variables, accounts, network services, persistent stores, or initialization options. Behavior is determined entirely by the evidence passed to the parser. Request high-entropy Client Hints through the application's HTTP response policy only when they are necessary, and account for browsers that withhold them.
+
 ## Accuracy and privacy
 
 User-Agent strings can be reduced, spoofed, or ambiguous. Client Hints are more structured but are not supported by every browser, and high-entropy values may be withheld. The `source` and `confidence` fields help applications account for those limitations.
@@ -194,12 +217,63 @@ The package performs no network requests, stores no data, and has no runtime dep
 
 ## Development
 
+Use Node.js `^20.19.0` or `>=22.12.0` for the current Vite/Vitest toolchain. The repository's `.node-version` selects Node.js 22. This contributor requirement is stricter than the Node.js 18 consumer runtime declared by the published package.
+
 ```sh
+git clone https://github.com/montasim/client-parser.git
+cd client-parser
 npm ci
 npm run check
 ```
 
 `npm run check` runs strict type checking, linting, formatting checks, tests, builds both module formats, validates package metadata, and smoke-tests the published entry points.
+
+### Commands
+
+| Command                 | Purpose                                              |
+| ----------------------- | ---------------------------------------------------- |
+| `npm run build`         | Build ESM, CommonJS, declarations, and source maps   |
+| `npm run typecheck`     | Type-check without emitting files                    |
+| `npm test`              | Run the Vitest suite once                            |
+| `npm run test:watch`    | Run tests in watch mode                              |
+| `npm run test:coverage` | Run tests and collect coverage                       |
+| `npm run lint`          | Run ESLint with zero warnings allowed                |
+| `npm run format:check`  | Verify Prettier formatting                           |
+| `npm run package:check` | Validate package metadata and published entry points |
+| `npm run check`         | Run the complete pre-publish validation sequence     |
+
+## Documentation map
+
+- [Interactive documentation](https://client-parser-demo.netlify.app/docs)
+- [Live parser playground](https://client-parser-demo.netlify.app)
+- [Public API and result shape](#api)
+- [Accuracy and privacy](#accuracy-and-privacy)
+- [Migration from 0.0.x](#migration-from-00x)
+- [Release history](CHANGELOG.md)
+- [Security policy](SECURITY.md)
+
+## Release status
+
+The package is published on npm and remains pre-1.0. `package.json` is currently `0.2.0`, but the checked-in [CHANGELOG.md](CHANGELOG.md) stops at `0.1.0`; it is not a complete upgrade history for the latest release. Inspect the `0.2.0` source diff and npm package metadata before upgrading until that changelog gap is repaired.
+
+CI targets Node.js 18, 20, and 22, but the current Vite toolchain requires Node.js `^20.19.0` or `>=22.12.0`; the Node.js 18 job and older Node.js 20 environments cannot run the contributor test configuration. Version tags trigger a publish workflow that re-runs validation, verifies that the tag matches `package.json`, and publishes with npm provenance.
+
+## Versioning, support, and security
+
+- Review [CHANGELOG.md](CHANGELOG.md) before upgrading; breaking changes are documented there.
+- Report reproducible bugs and request focused features through [GitHub Issues](https://github.com/montasim/client-parser/issues).
+- Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+- Pull requests should include tests for new classifications or corrected heuristics and pass `npm run check`.
+
+The repository does not currently include a separate `CONTRIBUTING.md` or `CODE_OF_CONDUCT.md`; the pull-request expectations above are the available contribution guidance. The dedicated [security policy](SECURITY.md) remains the private-reporting authority.
+
+If the package saves you time, you can support continued compatibility research and maintenance through [SupportKori](https://www.supportkori.com/montasim).
+
+Funding is optional and helps cover browser-fixture research, compatibility maintenance, and package publishing.
+
+## Author
+
+Created and maintained by [Mohammad Montasim-Al-Mamun Shuvo](https://github.com/montasim).
 
 ## License
 
