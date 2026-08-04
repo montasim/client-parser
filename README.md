@@ -196,6 +196,10 @@ All public interfaces and string unions are exported as TypeScript types.
 
 The package does not depend on DOM globals at import time. `parseNavigator` requires a navigator-like object supplied by browser code; the other entry points can be used server-side.
 
+## Configuration
+
+There are no environment variables, accounts, network services, persistent stores, or initialization options. Behavior is determined entirely by the evidence passed to the parser. Request high-entropy Client Hints through the application's HTTP response policy only when they are necessary, and account for browsers that withhold them.
+
 ## Accuracy and privacy
 
 User-Agent strings can be reduced, spoofed, or ambiguous. Client Hints are more structured but are not supported by every browser, and high-entropy values may be withheld. The `source` and `confidence` fields help applications account for those limitations.
@@ -214,6 +218,8 @@ The package performs no network requests, stores no data, and has no runtime dep
 ## Development
 
 ```sh
+git clone https://github.com/montasim/client-parser.git
+cd client-parser
 npm ci
 npm run check
 ```
@@ -254,6 +260,8 @@ The package is published on npm and remains pre-1.0, so consumers should review 
 - Report reproducible bugs and request focused features through [GitHub Issues](https://github.com/montasim/client-parser/issues).
 - Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
 - Pull requests should include tests for new classifications or corrected heuristics and pass `npm run check`.
+
+The repository does not currently include a separate `CONTRIBUTING.md` or `CODE_OF_CONDUCT.md`; the pull-request expectations above are the available contribution guidance. The dedicated [security policy](SECURITY.md) remains the private-reporting authority.
 
 If the package saves you time, you can support continued compatibility research and maintenance through [SupportKori](https://www.supportkori.com/montasim).
 
