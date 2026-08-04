@@ -9,6 +9,8 @@ A tiny, type-safe client classifier with User-Agent, Client Hints, and HTTP head
 
 **[Try the live playground](https://client-parser-demo.netlify.app)** · **[Browse interactive documentation](https://client-parser-demo.netlify.app/docs)**
 
+## Why client-parser?
+
 - Zero runtime dependencies
 - Works in browsers, Node.js, edge runtimes, ESM, and CommonJS
 - Detects browser, OS, device category, rendering engine, and common bots
@@ -218,6 +220,34 @@ npm run check
 
 `npm run check` runs strict type checking, linting, formatting checks, tests, builds both module formats, validates package metadata, and smoke-tests the published entry points.
 
+### Commands
+
+| Command                 | Purpose                                              |
+| ----------------------- | ---------------------------------------------------- |
+| `npm run build`         | Build ESM, CommonJS, declarations, and source maps   |
+| `npm run typecheck`     | Type-check without emitting files                    |
+| `npm test`              | Run the Vitest suite once                            |
+| `npm run test:watch`    | Run tests in watch mode                              |
+| `npm run test:coverage` | Run tests and collect coverage                       |
+| `npm run lint`          | Run ESLint with zero warnings allowed                |
+| `npm run format:check`  | Verify Prettier formatting                           |
+| `npm run package:check` | Validate package metadata and published entry points |
+| `npm run check`         | Run the complete pre-publish validation sequence     |
+
+## Documentation map
+
+- [Interactive documentation](https://client-parser-demo.netlify.app/docs)
+- [Live parser playground](https://client-parser-demo.netlify.app)
+- [Public API and result shape](#api)
+- [Accuracy and privacy](#accuracy-and-privacy)
+- [Migration from 0.0.x](#migration-from-00x)
+- [Release history](CHANGELOG.md)
+- [Security policy](SECURITY.md)
+
+## Release status
+
+The package is published on npm and remains pre-1.0, so consumers should review release notes carefully before upgrading. CI targets Node.js 18, 20, and 22. Version tags trigger a publish workflow that re-runs validation, verifies that the tag matches `package.json`, and publishes with npm provenance.
+
 ## Versioning, support, and security
 
 - Review [CHANGELOG.md](CHANGELOG.md) before upgrading; breaking changes are documented there.
@@ -226,6 +256,12 @@ npm run check
 - Pull requests should include tests for new classifications or corrected heuristics and pass `npm run check`.
 
 If the package saves you time, you can support continued compatibility research and maintenance through [SupportKori](https://www.supportkori.com/montasim).
+
+Funding is optional and helps cover browser-fixture research, compatibility maintenance, and package publishing.
+
+## Author
+
+Created and maintained by [Mohammad Montasim-Al-Mamun Shuvo](https://github.com/montasim).
 
 ## License
 
