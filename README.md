@@ -3,8 +3,11 @@
 [![npm version](https://img.shields.io/npm/v/client-parser.svg)](https://www.npmjs.com/package/client-parser)
 [![CI](https://github.com/montasim/client-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/montasim/client-parser/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/client-parser.svg)](./LICENSE)
+[![Support on SupportKori](https://img.shields.io/badge/support-SupportKori-FFDD00)](https://www.supportkori.com/montasim)
 
 A tiny, type-safe client classifier with User-Agent, Client Hints, and HTTP header support.
+
+**[Try the live playground](https://client-parser-demo.netlify.app)** · **[Browse interactive documentation](https://client-parser-demo.netlify.app/docs)**
 
 - Zero runtime dependencies
 - Works in browsers, Node.js, edge runtimes, ESM, and CommonJS
@@ -19,6 +22,8 @@ A tiny, type-safe client classifier with User-Agent, Client Hints, and HTTP head
 ```sh
 npm install client-parser
 ```
+
+Requires Node.js 18 or newer when used in Node. The package ships ESM, CommonJS, and TypeScript declarations and has no runtime dependencies.
 
 ## Quick start
 
@@ -177,6 +182,18 @@ Deprecated compatibility alias for `parseClient`. New code should use `parseClie
 
 All public interfaces and string unions are exported as TypeScript types.
 
+## Compatibility
+
+| Environment          | Support                                                                      |
+| -------------------- | ---------------------------------------------------------------------------- |
+| Node.js              | 18 or newer                                                                  |
+| Browsers             | Modern browsers and bundlers; User-Agent fallback works without Client Hints |
+| Edge/server runtimes | Plain header objects and `Headers`-compatible inputs                         |
+| Modules              | ESM and CommonJS                                                             |
+| TypeScript           | Declarations included                                                        |
+
+The package does not depend on DOM globals at import time. `parseNavigator` requires a navigator-like object supplied by browser code; the other entry points can be used server-side.
+
 ## Accuracy and privacy
 
 User-Agent strings can be reduced, spoofed, or ambiguous. Client Hints are more structured but are not supported by every browser, and high-entropy values may be withheld. The `source` and `confidence` fields help applications account for those limitations.
@@ -200,6 +217,15 @@ npm run check
 ```
 
 `npm run check` runs strict type checking, linting, formatting checks, tests, builds both module formats, validates package metadata, and smoke-tests the published entry points.
+
+## Versioning, support, and security
+
+- Review [CHANGELOG.md](CHANGELOG.md) before upgrading; breaking changes are documented there.
+- Report reproducible bugs and request focused features through [GitHub Issues](https://github.com/montasim/client-parser/issues).
+- Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+- Pull requests should include tests for new classifications or corrected heuristics and pass `npm run check`.
+
+If the package saves you time, you can support continued compatibility research and maintenance through [SupportKori](https://www.supportkori.com/montasim).
 
 ## License
 
