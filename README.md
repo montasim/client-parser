@@ -25,7 +25,7 @@ A tiny, type-safe client classifier with User-Agent, Client Hints, and HTTP head
 npm install client-parser
 ```
 
-Requires Node.js 18 or newer when used in Node. The package ships ESM, CommonJS, and TypeScript declarations and has no runtime dependencies.
+Consumers can use the built package on Node.js 18 or newer. The package ships ESM, CommonJS, and TypeScript declarations and has no runtime dependencies. Contributing from source requires a newer Node.js version; see [Development](#development).
 
 ## Quick start
 
@@ -217,6 +217,8 @@ The package performs no network requests, stores no data, and has no runtime dep
 
 ## Development
 
+Use Node.js `^20.19.0` or `>=22.12.0` for the current Vite/Vitest toolchain. The repository's `.node-version` selects Node.js 22. This contributor requirement is stricter than the Node.js 18 consumer runtime declared by the published package.
+
 ```sh
 git clone https://github.com/montasim/client-parser.git
 cd client-parser
@@ -252,7 +254,9 @@ npm run check
 
 ## Release status
 
-The package is published on npm and remains pre-1.0, so consumers should review release notes carefully before upgrading. CI targets Node.js 18, 20, and 22. Version tags trigger a publish workflow that re-runs validation, verifies that the tag matches `package.json`, and publishes with npm provenance.
+The package is published on npm and remains pre-1.0. `package.json` is currently `0.2.0`, but the checked-in [CHANGELOG.md](CHANGELOG.md) stops at `0.1.0`; it is not a complete upgrade history for the latest release. Inspect the `0.2.0` source diff and npm package metadata before upgrading until that changelog gap is repaired.
+
+CI targets Node.js 18, 20, and 22, but the current Vite toolchain requires Node.js `^20.19.0` or `>=22.12.0`; the Node.js 18 job and older Node.js 20 environments cannot run the contributor test configuration. Version tags trigger a publish workflow that re-runs validation, verifies that the tag matches `package.json`, and publishes with npm provenance.
 
 ## Versioning, support, and security
 
