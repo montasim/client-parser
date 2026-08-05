@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Documentation prototype for client-parser." />
+    <title>Docs — client-parser</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body class="docs-page">
+    <a class="skip-link" href="#docs-main">Skip to documentation</a>
+    <header class="site-header docs-header">
+      <a class="brand" href="./index.html"
+        ><span class="brand-mark">cp</span><span>client-parser</span></a
+      >
+      <span class="docs-divider">/</span><span class="docs-label">Documentation</span>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="./index.html#playground">Playground</a
+        ><a aria-current="page" href="./docs.html">Docs</a
+        ><a class="github-link" href="https://github.com/montasim/client-parser">GitHub ↗</a>
+      </nav>
+      <button class="menu-button" type="button" aria-expanded="false" aria-label="Open navigation">
+        <span></span><span></span>
+      </button>
+    </header>
+
+    <div class="docs-shell">
+      <aside class="docs-sidebar" aria-label="Documentation sections">
+        <div class="docs-version"><span>Current</span><strong>v0.1.0</strong></div>
+        <nav>
+          <p>Get started</p>
+          <a class="active" href="#introduction">Introduction</a
+          ><a href="#installation">Installation</a><a href="#quick-start">Quick start</a>
+          <p>Guides</p>
+          <a href="#server">Server-side headers</a><a href="#client-hints">Browser Client Hints</a
+          ><a href="#privacy">Accuracy & privacy</a>
+          <p>Reference</p>
+          <a href="#api">API</a><a href="#result">Result shape</a
+          ><a href="#migration">Migrate from 0.0.x</a>
+        </nav>
+      </aside>
+
+      <main class="docs-content" id="docs-main">
+        <section class="docs-hero" id="introduction">
+          <span class="eyebrow">Documentation / Overview</span>
+          <h1>Classify clients from the evidence you actually have.</h1>
+          <p>
+            client-parser is a tiny, type-safe client classifier for User-Agent strings, Client
+            Hints, and HTTP headers. It reports what it found, where it found it, and how confident
+            the classification is.
+          </p>
+          <div class="docs-facts">
+            <span>Zero dependencies</span><span>Node 18+</span><span>ESM + CommonJS</span
+            ><span>TypeScript</span>
+          </div>
+          <div class="callout">
+            <strong>Use classification responsibly.</strong>
+            <p>
+              Use these signals for analytics, diagnostics, and presentation hints—not
+              authentication, authorization, or browser capability checks.
+            </p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="installation">
+          <div class="doc-section-number">01</div>
+          <div class="doc-section-body">
+            <h2>Installation</h2>
+            <p>Install from npm with your preferred package manager.</p>
+            <div class="install-box docs-install" data-install-widget>
+              <div class="install-tabs" role="tablist" aria-label="Package manager">
+                <button role="tab" aria-selected="true" data-manager="npm">npm</button
+                ><button role="tab" aria-selected="false" data-manager="pnpm">pnpm</button
+                ><button role="tab" aria-selected="false" data-manager="yarn">yarn</button
+                ><button role="tab" aria-selected="false" data-manager="bun">bun</button>
+              </div>
+              <div class="command-row">
+                <code
+                  ><span class="prompt">$</span>
+                  <span data-install-command>npm install client-parser</span></code
+                ><button class="copy-button" type="button" data-copy-install>
+                  <span data-copy-label>Copy</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="doc-section" id="quick-start">
+          <div class="doc-section-number">02</div>
+          <div class="doc-section-body">
+            <h2>Quick start</h2>
+            <p>
+              Pass a User-Agent string to <code>parseClient</code>. Unavailable details are omitted
+              rather than filled with placeholders.
+            </p>
+            <div class="doc-code">
+              <div><span>TypeScript</span><button type="button" data-copy-code>Copy</button></div>
+              <pre><code><span class="kw">import</span> { parseClient } <span class="kw">from</span> <span class="str">'client-parser'</span>;
+
+<span class="kw">const</span> client = <span class="fn">parseClient</span>(
+  <span class="str">'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5...)'</span>
+);
+
+console.log(client.device.type);   <span class="comment">// "mobile"</span>
+console.log(client.browser.name);  <span class="comment">// "Chrome"</span>
+console.log(client.os.name);       <span class="comment">// "iOS"</span>
+console.log(client.engine.name);   <span class="comment">// "WebKit"</span>
+console.log(client.isMobile);      <span class="comment">// true</span></code></pre>
+            </div>
+            <p>
+              The default export is also <code>parseClient</code>. CommonJS consumers can use
+              <code>require('client-parser')</code>.
+            </p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="server">
+          <div class="doc-section-number">03</div>
+          <div class="doc-section-body">
+            <h2>Server-side header parsing</h2>
+            <p>
+              Pass a plain header object or any object with a Headers-compatible
+              <code>get()</code> method. Header names are case-insensitive.
+            </p>
+            <div class="doc-code">
+              <div><span>server.ts</span><button type="button" data-copy-code>Copy</button></div>
+              <pre><code><span class="kw">import</span> { parseClient } <span class="kw">from</span> <span class="str">'client-parser'</span>;
+
+<span class="kw">const</span> client = <span class="fn">parseClient</span>({
+  headers: request.headers,
+});</code></pre>
+            </div>
+            <p>
+              Supported headers include <code>Sec-CH-UA</code>,
+              <code>Sec-CH-UA-Full-Version-List</code>, <code>Sec-CH-UA-Mobile</code>,
+              <code>Sec-CH-UA-Platform</code>, platform version, architecture, bitness, model, and
+              WoW64.
+            </p>
+          </div>
+        </section>
+
+        <section class="doc-section" id="client-hints">
+          <div class="doc-section-number">04</div>
+          <div class="doc-section-body">
+            <h2>Browser Client Hints</h2>
+            <p>
+              <code>parseNavigator</code> collects high-entropy hints when they are available and
+              falls back gracefully when they are denied or unsupported.
+            </p>
+            <div class="doc-code">
+              <div><span>browser.ts</span><button type="button" data-copy-code>Copy</button></div>
+              <pre><code><span class="kw">import</span> { parseNavigator } <span class="kw">from</span> <span class="str">'client-parser'</span>;
+
+<span class="kw">const</span> client = <span class="kw">await</span> <span class="fn">parseNavigator</span>(navigator);</code></pre>
+            </div>
+            <div class="callout neutral">
+              <strong>High-entropy hints are conditional.</strong>
+              <p>
+                The browser and server policy decide which values are exposed. Always expect a
+                partial result.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="doc-section" id="api">
+          <div class="doc-section-number">05</div>
+          <div class="doc-section-body">
+            <h2>API reference</h2>
+            <div class="api-list">
+              <article>
+                <code>parseClient(input?)</code>
+                <p>
+                  Synchronously classifies a User-Agent string or a
+                  <code>ClientEvidence</code> object.
+                </p>
+              </article>
+              <article>
+                <code>parseNavigator(navigatorLike)</code>
+                <p>Asynchronously collects browser evidence and classifies the result.</p>
+              </article>
+              <article>
+                <code>parseClientHintHeaders(headers)</code>
+                <p>Normalizes <code>Sec-CH-UA-*</code> headers into the Client Hints shape.</p>
+              </article>
+              <article>
+                <code>getDeviceType(input?)</code><span>deprecated</span>
+                <p>
+                  Compatibility alias for <code>parseClient</code>. Use the new name in new code.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="doc-section" id="result">
+          <div class="doc-section-number">06</div>
+          <div class="doc-section-body">
+            <h2>Result shape</h2>
+            <p>
+              The stable top-level result lets consumers use narrow signals without reparsing raw
+              input.
+            </p>
+            <div class="result-table" role="table" aria-label="ClientInfo result fields">
+              <div role="row">
+                <strong role="cell">device</strong
+                ><span role="cell">type, name, vendor, model</span>
+              </div>
+              <div role="row">
+                <strong role="cell">browser</strong><span role="cell">name, version, major</span>
+              </div>
+              <div role="row">
+                <strong role="cell">os</strong><span role="cell">name, version, architecture</span>
+              </div>
+              <div role="row">
+                <strong role="cell">engine</strong><span role="cell">name, version</span>
+              </div>
+              <div role="row">
+                <strong role="cell">bot</strong><span role="cell">isBot, name, category</span>
+              </div>
+              <div role="row">
+                <strong role="cell">source</strong
+                ><span role="cell">user-agent, client-hints, headers, platform</span>
+              </div>
+              <div role="row">
+                <strong role="cell">confidence</strong><span role="cell">high, medium, low</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="doc-section" id="privacy">
+          <div class="doc-section-number">07</div>
+          <div class="doc-section-body">
+            <h2>Accuracy & privacy</h2>
+            <p>
+              User-Agent strings can be reduced, spoofed, or ambiguous. Client Hints are structured
+              but not universal. Use <code>source</code> and <code>confidence</code> to account for
+              those limits.
+            </p>
+            <ul class="check-list">
+              <li>No network requests</li>
+              <li>No stored data</li>
+              <li>No runtime dependencies</li>
+              <li>User-Agent input capped at 8 KiB</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="doc-section" id="migration">
+          <div class="doc-section-number">08</div>
+          <div class="doc-section-body">
+            <h2>Migrate from 0.0.x</h2>
+            <ul class="migration-list">
+              <li>Replace <code>getDeviceType()</code> with <code>parseClient()</code>.</li>
+              <li>Read bot status from <code>result.bot.isBot</code>.</li>
+              <li>
+                Expect form-factor device types such as <code>mobile</code>, <code>tablet</code>,
+                and <code>desktop</code>.
+              </li>
+              <li>Handle absent optional fields instead of <code>"unknown"</code> placeholders.</li>
+              <li>Import public TypeScript types directly from <code>client-parser</code>.</li>
+            </ul>
+            <a class="button primary" href="./index.html#playground"
+              >Open the playground <span>→</span></a
+            >
+          </div>
+        </section>
+      </main>
+
+      <aside class="docs-toc" aria-label="On this page">
+        <p>On this page</p>
+        <a href="#introduction">Introduction</a><a href="#installation">Installation</a
+        ><a href="#quick-start">Quick start</a><a href="#server">Server-side</a
+        ><a href="#client-hints">Client Hints</a><a href="#api">API</a
+        ><a href="#result">Result shape</a><a href="#privacy">Privacy</a
+        ><a href="#migration">Migration</a>
+      </aside>
+    </div>
+    <footer class="site-footer docs-footer">
+      <p>client-parser documentation prototype · v0.1.0</p>
+      <div>
+        <a href="./index.html">Home</a><a href="https://github.com/montasim/client-parser">GitHub</a
+        ><a href="https://www.npmjs.com/package/client-parser">npm</a>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+
+@theme {
+    --font-sans: 'Manrope', 'Segoe UI', sans-serif;
+    --font-display: 'Space Grotesk', 'Avenir Next', sans-serif;
+    --font-mono: 'DM Mono', 'SFMono-Regular', Consolas, monospace;
+    --color-brand: #155eef;
+    --color-ink: #0b1628;
+    --color-paper: #f7f9fc;
+    --shadow-panel: 0 24px 70px rgba(16, 38, 78, 0.13);
+}
+
+@layer base {
+    * {
+        @apply border-slate-200;
+    }
+    html {
+        @apply bg-paper scroll-smooth;
+        scroll-padding-top: 90px;
+    }
+    body {
+        @apply bg-paper text-ink m-0 font-sans antialiased;
+    }
+    button,
+    a {
+        @apply focus-visible:ring-3 focus-visible:ring-blue-500/25 focus-visible:outline-none;
+    }
+    ::selection {
+        @apply bg-blue-600 text-white;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
