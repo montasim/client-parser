@@ -7,7 +7,7 @@
 
 A tiny, type-safe client classifier with User-Agent, Client Hints, and HTTP header support.
 
-**[Try the live playground](https://client-parser-demo.netlify.app)** · **[Browse interactive documentation](https://client-parser-demo.netlify.app/docs)**
+**[Try the live playground](https://client-parser.netlify.app)** · **[Browse interactive documentation](https://client-parser.netlify.app/docs)**
 
 ## Why client-parser?
 
@@ -240,8 +240,8 @@ pnpm check:parser
 
 ## Documentation map
 
-- [Interactive documentation](https://client-parser-demo.netlify.app/docs)
-- [Live parser playground](https://client-parser-demo.netlify.app)
+- [Interactive documentation](https://client-parser.netlify.app/docs)
+- [Live parser playground](https://client-parser.netlify.app)
 - [Public API and result shape](#api)
 - [Accuracy and privacy](#accuracy-and-privacy)
 - [Migration from 0.0.x](#migration-from-00x)

@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/montasim/client-parser/issues"
   },
-  "homepage": "https://client-parser-demo.netlify.app",
+  "homepage": "https://client-parser.netlify.app",
   "engines": {
     "node": ">=18"
   },

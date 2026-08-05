@@ -3,7 +3,7 @@ export const SITE = {
     title: 'client-parser — Type-safe User-Agent and Client Hints classifier',
     description:
         'Classify browsers, operating systems, devices, engines, and bots from User-Agent strings, Client Hints, and HTTP headers—with evidence and confidence.',
-    url: 'https://client-parser-demo.netlify.app',
+    url: 'https://client-parser.netlify.app',
     repositoryUrl: 'https://github.com/montasim/client-parser',
     npmUrl: 'https://www.npmjs.com/package/client-parser',
     authorUrl: 'https://montasim-dev.web.app',

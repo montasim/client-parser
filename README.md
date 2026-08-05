@@ -7,7 +7,7 @@
 
 A pnpm monorepo for the zero-dependency `client-parser` TypeScript library and its interactive TanStack Start playground and documentation site. Keeping both projects together lets the web app exercise the local package on every build, so library and documentation changes can ship from one repository.
 
-**[Try the live playground](https://client-parser-demo.netlify.app) · [Read the interactive docs](https://client-parser-demo.netlify.app/docs) · [Install from npm](https://www.npmjs.com/package/client-parser)**
+**[Try the live playground](https://client-parser.netlify.app) · [Read the interactive docs](https://client-parser.netlify.app/docs) · [Install from npm](https://www.npmjs.com/package/client-parser)**
 
 ## What is included
 

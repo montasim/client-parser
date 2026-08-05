@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://client-parser-demo.netlify.app/sitemap.xml
+Sitemap: https://client-parser.netlify.app/sitemap.xml
