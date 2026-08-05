@@ -46,11 +46,7 @@ export interface EngineInfo {
 }
 
 export type BotCategory =
-    | 'crawler'
-    | 'preview'
-    | 'automation'
-    | 'monitoring'
-    | 'unknown';
+    'crawler' | 'preview' | 'automation' | 'monitoring' | 'unknown';
 
 export interface BotInfo {
     isBot: boolean;

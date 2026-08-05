@@ -1,28 +1,31 @@
-name: Publish
+name: Publish client-parser
 
 on:
-    push:
-        tags: ['v*']
+  push:
+    tags: ['client-parser-v*']
 
 permissions:
-    contents: read
-    id-token: write
+  contents: read
+  id-token: write
 
 jobs:
-    publish:
-        if: github.repository == 'montasim/client-parser'
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-                  cache: npm
-                  registry-url: https://registry.npmjs.org
-            - run: npm ci
-            - run: npm run check
-            - name: Verify tag matches package version
-              run: node -e "if ('v' + require('./package.json').version !== process.env.GITHUB_REF_NAME) process.exit(1)"
-            - run: npm publish --provenance --access public
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  publish:
+    if: github.repository == 'montasim/client-parser'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.14.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check:parser
+      - name: Verify tag matches package version
+        run: node -e "if ('client-parser-v' + require('./packages/client-parser/package.json').version !== process.env.GITHUB_REF_NAME) process.exit(1)"
+      - run: pnpm --dir packages/client-parser publish --provenance --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

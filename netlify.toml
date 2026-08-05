@@ -1,0 +1,22 @@
+[build]
+  command = "pnpm build:web"
+  publish = "apps/web/dist/client"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PNPM_VERSION = "10.14.0"
+  # This site previously ran Next.js and still has its UI-installed runtime plugin.
+  # Skip that legacy plugin; TanStack Start is handled by the Vite adapter.
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+[dev]
+  command = "pnpm dev:web"
+  targetPort = 3000
+  port = 8888
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs><radialGradient id="glow" cx="70%" cy="28%" r="65%"><stop offset="0" stop-color="#2F75FF" stop-opacity=".22"/><stop offset="1" stop-color="#F7F9FC" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1200" height="630" fill="#F7F9FC"/><rect width="1200" height="630" fill="url(#glow)"/>
+  <path fill="#155EEF" d="M91 76h70a30 30 0 0 1 30 30v54a30 30 0 0 1-30 30h-40a45 45 0 0 1-45-45V91a15 15 0 0 1 15-15Z"/>
+  <text x="98" y="152" fill="#fff" font-family="Arial, sans-serif" font-size="54" font-weight="700">cp</text>
+  <text x="220" y="147" fill="#0B1628" font-family="Arial, sans-serif" font-size="47" font-weight="700">client-parser</text>
+  <text x="76" y="330" fill="#0B1628" font-family="Arial, sans-serif" font-size="78" font-weight="700" letter-spacing="-4">Know the client.</text>
+  <text x="76" y="420" fill="#155EEF" font-family="Arial, sans-serif" font-size="78" font-weight="700" letter-spacing="-4">Keep the uncertainty.</text>
+  <text x="80" y="515" fill="#52627A" font-family="Arial, sans-serif" font-size="28">User-Agent · Client Hints · HTTP headers · TypeScript</text>
+</svg>
