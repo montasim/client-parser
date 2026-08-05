@@ -4,7 +4,7 @@
   "private": true,
   "description": "client-parser library and interactive documentation workspace.",
   "license": "MIT",
-  "homepage": "https://client-parser-demo.netlify.app",
+  "homepage": "https://client-parser.netlify.app",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/montasim/client-parser.git"
